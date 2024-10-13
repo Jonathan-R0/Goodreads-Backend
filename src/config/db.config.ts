@@ -10,7 +10,9 @@ const client = new Client({
 	port: 5432,
 });
 
-client.connect();
+if (process.env.NODE_ENV !== 'test') {
+	client.connect();
+}
 
 const db = drizzle(client);
 

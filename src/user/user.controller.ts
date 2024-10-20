@@ -12,11 +12,15 @@ import { UserService as UserService } from './user.service';
 import { User } from '@/user/user.entity';
 import { StandardResponse, success } from '@/util/utils';
 import { UserDto } from './user.dto';
+import { FollowService } from './follows/follow.service';
 
 @ApiTags('Users')
 @Controller('user')
 export class UserController {
-	constructor(private readonly userService: UserService) {}
+	constructor(
+		private readonly userService: UserService,
+		private readonly followService: FollowService,
+	) {}
 
 	@Get('/:id')
 	@ApiOperation({ summary: 'Get User' })
@@ -56,5 +60,47 @@ export class UserController {
 		@Param('id') id: string,
 	): Promise<StandardResponse<User>> {
 		return success(await this.userService.delete(id));
+	}
+
+	@Post(':id/follow/:otherId')
+	@ApiOperation({ summary: 'Follow User' })
+	@ApiResponse({ status: 200, description: 'Follows a user.' })
+	public async followUser(
+		@Param('id') id: number,
+		@Param('otherId') otherId: number,
+	): Promise<StandardResponse<void>> {
+		return success(
+			await this.followService.follow(Number(id), Number(otherId)),
+		);
+	}
+
+	@Delete(':id/unfollow/:otherId')
+	@ApiOperation({ summary: 'Unfollow User' })
+	@ApiResponse({ status: 200, description: 'Unfollows a user.' })
+	public async unfollowUser(
+		@Param('id') id: number,
+		@Param('otherId') otherId: number,
+	): Promise<StandardResponse<void>> {
+		return success(
+			await this.followService.unfollow(Number(id), Number(otherId)),
+		);
+	}
+
+	@Get('/followers/:id')
+	@ApiOperation({ summary: 'Get Followers' })
+	@ApiResponse({ status: 200, description: 'Returns a list of followers.' })
+	public async getFollowers(
+		@Param('id') userId: number,
+	): Promise<StandardResponse<User[]>> {
+		return success(await this.followService.getFollowers(Number(userId)));
+	}
+
+	@Get('/following/:id')
+	@ApiOperation({ summary: 'Get Following' })
+	@ApiResponse({ status: 200, description: 'Returns a list of following.' })
+	public async getFollowing(
+		@Param('id') userId: number,
+	): Promise<StandardResponse<User[]>> {
+		return success(await this.followService.getFollowing(Number(userId)));
 	}
 }

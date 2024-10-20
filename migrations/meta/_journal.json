@@ -15,6 +15,13 @@
       "when": 1729450346382,
       "tag": "0001_common_boom_boom",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1729457772946,
+      "tag": "0002_romantic_pyro",
+      "breakpoints": true
     }
   ]
 }

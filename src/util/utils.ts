@@ -1,3 +1,4 @@
+import { PasswordlessUser, User } from '@/user/user.entity';
 import { applyDecorators } from '@nestjs/common';
 import { ApiQuery } from '@nestjs/swagger';
 
@@ -63,6 +64,24 @@ export function success<T>(data?: T | null): GoodResponse<T> {
 		status: 'success',
 		data: data ?? null,
 	};
+}
+
+export function removePassword<T extends { password: string | null }>(data: T) {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const { password, ...rest } = data;
+	return rest;
+}
+
+export function successWithoutUserPassword(
+	user: User,
+): StandardResponse<PasswordlessUser> {
+	return success(removePassword(user));
+}
+
+export function successWithoutUsersPasswords(
+	users: User[],
+): StandardResponse<PasswordlessUser[]> {
+	return success(users.map((user) => removePassword(user)));
 }
 
 export function failure(message: string | undefined, url: string): BadResponse {

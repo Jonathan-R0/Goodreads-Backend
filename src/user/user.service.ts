@@ -1,4 +1,4 @@
-import usersTable from '@/user/user.entity';
+import usersTable, { User } from '@/user/user.entity';
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { BaseService } from '@/util/base.service';
@@ -10,5 +10,9 @@ export class UserService extends BaseService<
 > {
 	constructor(private readonly userRepository: UserRepository) {
 		super(userRepository);
+	}
+
+	public async getUserByEmail(email: string): Promise<User> {
+		return await this.userRepository.findByEmail(email);
 	}
 }

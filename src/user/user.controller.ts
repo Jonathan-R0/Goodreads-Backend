@@ -9,10 +9,16 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UserService as UserService } from './user.service';
-import { User } from '@/user/user.entity';
-import { StandardResponse, success } from '@/util/utils';
+import { PasswordlessUser } from '@/user/user.entity';
+import {
+	StandardResponse,
+	success,
+	successWithoutUserPassword,
+	successWithoutUsersPasswords,
+} from '@/util/utils';
 import { UserDto } from './user.dto';
 import { FollowService } from './follows/follow.service';
+import * as bcrypt from 'bcryptjs';
 
 @ApiTags('Users')
 @Controller('user')
@@ -25,8 +31,12 @@ export class UserController {
 	@Get('/:id')
 	@ApiOperation({ summary: 'Get User' })
 	@ApiResponse({ status: 200, description: 'Returns a user object.' })
-	async getUser(@Param('id') id: number): Promise<StandardResponse<User>> {
-		return success(await this.userService.findById(Number(id)));
+	async getUser(
+		@Param('id') id: number,
+	): Promise<StandardResponse<PasswordlessUser>> {
+		return successWithoutUserPassword(
+			await this.userService.findById(Number(id)),
+		);
 	}
 
 	@Post('/')
@@ -34,8 +44,13 @@ export class UserController {
 	@ApiResponse({ status: 201, description: 'Creates a user object.' })
 	public async createUser(
 		@Body() user: UserDto,
-	): Promise<StandardResponse<User>> {
-		return success(await this.userService.create(user));
+	): Promise<StandardResponse<PasswordlessUser>> {
+		return successWithoutUserPassword(
+			await this.userService.create({
+				...user,
+				password: bcrypt.hashSync(user.password),
+			}),
+		);
 	}
 
 	@Put('/:id')
@@ -44,8 +59,8 @@ export class UserController {
 	public async updateUser(
 		@Param('id') id: number,
 		@Body() user: UserDto,
-	): Promise<StandardResponse<User>> {
-		return success(
+	): Promise<StandardResponse<PasswordlessUser>> {
+		return successWithoutUserPassword(
 			await this.userService.update({ ...user, id: Number(id) }),
 		);
 	}
@@ -58,8 +73,8 @@ export class UserController {
 	})
 	public async deleteUser(
 		@Param('id') id: string,
-	): Promise<StandardResponse<User>> {
-		return success(await this.userService.delete(id));
+	): Promise<StandardResponse<PasswordlessUser>> {
+		return successWithoutUserPassword(await this.userService.delete(id));
 	}
 
 	@Post(':id/follow/:otherId')
@@ -91,8 +106,10 @@ export class UserController {
 	@ApiResponse({ status: 200, description: 'Returns a list of followers.' })
 	public async getFollowers(
 		@Param('id') userId: number,
-	): Promise<StandardResponse<User[]>> {
-		return success(await this.followService.getFollowers(Number(userId)));
+	): Promise<StandardResponse<PasswordlessUser[]>> {
+		return successWithoutUsersPasswords(
+			await this.followService.getFollowers(Number(userId)),
+		);
 	}
 
 	@Get('/following/:id')
@@ -100,7 +117,9 @@ export class UserController {
 	@ApiResponse({ status: 200, description: 'Returns a list of following.' })
 	public async getFollowing(
 		@Param('id') userId: number,
-	): Promise<StandardResponse<User[]>> {
-		return success(await this.followService.getFollowing(Number(userId)));
+	): Promise<StandardResponse<PasswordlessUser[]>> {
+		return successWithoutUsersPasswords(
+			await this.followService.getFollowing(Number(userId)),
+		);
 	}
 }

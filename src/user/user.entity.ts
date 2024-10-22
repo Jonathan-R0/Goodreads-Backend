@@ -7,6 +7,7 @@ export const usersTable = pgTable('users', {
 	email: text('email').unique(),
 	password: text('password'),
 	role: text('role'),
+	biography: text('biography'),
 });
 
 export default usersTable;

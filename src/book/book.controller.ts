@@ -6,12 +6,14 @@ import {
 	Param,
 	Post,
 	Put,
+	UseGuards,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { BookService } from './book.service';
 import { Book } from '@/book/book.entity';
 import { StandardResponse, success } from '@/util/utils';
 import { BookDto } from './book.dto';
+import { AuthGuard } from '@/auth/auth.guard';
 
 @ApiTags('Books')
 @Controller('books')
@@ -21,6 +23,7 @@ export class BookController {
 	@Get('/:id')
 	@ApiOperation({ summary: 'Get Book' })
 	@ApiResponse({ status: 200, description: 'Returns a book object.' })
+	@UseGuards(AuthGuard)
 	async getBook(@Param('id') id: number): Promise<StandardResponse<Book>> {
 		return success(await this.bookService.findById(Number(id)));
 	}
@@ -28,6 +31,7 @@ export class BookController {
 	@Post('/')
 	@ApiOperation({ summary: 'Create Book' })
 	@ApiResponse({ status: 201, description: 'Creates a book object.' })
+	@UseGuards(AuthGuard)
 	public async createBook(
 		@Body() book: BookDto,
 	): Promise<StandardResponse<Book>> {
@@ -37,6 +41,7 @@ export class BookController {
 	@Put('/:id')
 	@ApiOperation({ summary: 'Update Book' })
 	@ApiResponse({ status: 200, description: 'Updates a book object.' })
+	@UseGuards(AuthGuard)
 	public async updateBook(
 		@Param('id') id: number,
 		@Body() book: BookDto,
@@ -52,6 +57,7 @@ export class BookController {
 		status: 200,
 		description: 'Deletes and returns a book object.',
 	})
+	@UseGuards(AuthGuard)
 	public async deleteBook(
 		@Param('id') id: string,
 	): Promise<StandardResponse<Book>> {

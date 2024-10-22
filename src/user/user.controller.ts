@@ -6,6 +6,7 @@ import {
 	Param,
 	Post,
 	Put,
+	UseGuards,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UserService as UserService } from './user.service';
@@ -19,6 +20,7 @@ import {
 import { UserDto } from './user.dto';
 import { FollowService } from './follows/follow.service';
 import * as bcrypt from 'bcryptjs';
+import { AuthGuard } from '@/auth/auth.guard';
 
 @ApiTags('Users')
 @Controller('user')
@@ -31,6 +33,7 @@ export class UserController {
 	@Get('/:id')
 	@ApiOperation({ summary: 'Get User' })
 	@ApiResponse({ status: 200, description: 'Returns a user object.' })
+	@UseGuards(AuthGuard)
 	async getUser(
 		@Param('id') id: number,
 	): Promise<StandardResponse<PasswordlessUser>> {
@@ -56,6 +59,7 @@ export class UserController {
 	@Put('/:id')
 	@ApiOperation({ summary: 'Update User' })
 	@ApiResponse({ status: 200, description: 'Updates a user object.' })
+	@UseGuards(AuthGuard)
 	public async updateUser(
 		@Param('id') id: number,
 		@Body() user: UserDto,
@@ -71,6 +75,7 @@ export class UserController {
 		status: 200,
 		description: 'Deletes and returns a user object.',
 	})
+	@UseGuards(AuthGuard)
 	public async deleteUser(
 		@Param('id') id: string,
 	): Promise<StandardResponse<PasswordlessUser>> {
@@ -80,6 +85,7 @@ export class UserController {
 	@Post(':id/follow/:otherId')
 	@ApiOperation({ summary: 'Follow User' })
 	@ApiResponse({ status: 200, description: 'Follows a user.' })
+	@UseGuards(AuthGuard)
 	public async followUser(
 		@Param('id') id: number,
 		@Param('otherId') otherId: number,
@@ -92,6 +98,7 @@ export class UserController {
 	@Delete(':id/unfollow/:otherId')
 	@ApiOperation({ summary: 'Unfollow User' })
 	@ApiResponse({ status: 200, description: 'Unfollows a user.' })
+	@UseGuards(AuthGuard)
 	public async unfollowUser(
 		@Param('id') id: number,
 		@Param('otherId') otherId: number,
@@ -104,6 +111,7 @@ export class UserController {
 	@Get('/followers/:id')
 	@ApiOperation({ summary: 'Get Followers' })
 	@ApiResponse({ status: 200, description: 'Returns a list of followers.' })
+	@UseGuards(AuthGuard)
 	public async getFollowers(
 		@Param('id') userId: number,
 	): Promise<StandardResponse<PasswordlessUser[]>> {
@@ -115,6 +123,7 @@ export class UserController {
 	@Get('/following/:id')
 	@ApiOperation({ summary: 'Get Following' })
 	@ApiResponse({ status: 200, description: 'Returns a list of following.' })
+	@UseGuards(AuthGuard)
 	public async getFollowing(
 		@Param('id') userId: number,
 	): Promise<StandardResponse<PasswordlessUser[]>> {

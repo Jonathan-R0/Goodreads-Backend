@@ -20,7 +20,7 @@ export class AuthService {
 	public async signIn(
 		email: string,
 		pass: string,
-	): Promise<{ access_token: string }> {
+	): Promise<{ id: number; access_token: string }> {
 		const user = await this.usersService.getUserByEmail(email);
 		console.log(pass, user.password);
 		if (
@@ -30,6 +30,7 @@ export class AuthService {
 			throw new UnauthorizedException();
 		}
 		return {
+			id: user.id,
 			access_token: await this.jwtService.signAsync({
 				sub: user.email,
 				username: user.name,

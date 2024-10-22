@@ -18,4 +18,12 @@ export class UserRepository extends BaseRepository<typeof usersTable> {
 			.where(eq(usersTable.email, email))
 			.then(takeUniqueOrThrow);
 	}
+
+	public async findByUsername(username: string) {
+		return await db
+			.select()
+			.from(usersTable)
+			.where(eq(usersTable.name, username))
+			.then(takeUniqueOrThrow);
+	}
 }

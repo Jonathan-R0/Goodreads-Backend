@@ -49,7 +49,7 @@ export class UserController {
 		@Body() user: UserDto,
 	): Promise<StandardResponse<PasswordlessUser>> {
 		return successWithoutUserPassword(
-			await this.userService.create({
+			await this.userService.createUser({
 				...user,
 				password: bcrypt.hashSync(user.password),
 			}),

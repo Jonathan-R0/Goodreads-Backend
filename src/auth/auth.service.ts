@@ -22,7 +22,6 @@ export class AuthService {
 		pass: string,
 	): Promise<{ id: number; access_token: string }> {
 		const user = await this.usersService.getUserByEmail(email);
-		console.log(pass, user.password);
 		if (
 			user &&
 			(await bcrypt.compare(bcrypt.hashSync(pass), user.password || ''))

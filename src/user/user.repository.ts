@@ -11,7 +11,15 @@ export class UserRepository extends BaseRepository<typeof usersTable> {
 		super(usersTable, usersTable.id);
 	}
 
-	public async findByEmail(email: string) {
+	public async findOneByEmail(email: string) {
+		return await db
+			.select()
+			.from(usersTable)
+			.where(eq(usersTable.email, email))
+			.then((users) => users[0]);
+	}
+
+	public async findByEmailOrThrow(email: string) {
 		return await db
 			.select()
 			.from(usersTable)
@@ -19,11 +27,11 @@ export class UserRepository extends BaseRepository<typeof usersTable> {
 			.then(takeUniqueOrThrow);
 	}
 
-	public async findByUsername(username: string) {
+	public async findOneByUsername(username: string) {
 		return await db
 			.select()
 			.from(usersTable)
 			.where(eq(usersTable.name, username))
-			.then(takeUniqueOrThrow);
+			.then((users) => users[0]);
 	}
 }

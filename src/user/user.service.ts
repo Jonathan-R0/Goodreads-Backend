@@ -14,20 +14,20 @@ export class UserService extends BaseService<
 	}
 
 	public async getUserByEmail(email: string): Promise<User> {
-		return await this.userRepository.findByEmail(email);
+		return await this.userRepository.findByEmailOrThrow(email);
 	}
 
 	public async createUser(user: UserDto): Promise<User> {
-		const userFoundByEmail = await this.userRepository.findByEmail(
-			user.email || '',
+		const userFoundByEmail = await this.userRepository.findOneByEmail(
+			user.email,
 		);
-		if (userFoundByEmail.email === user.email) {
+		if (userFoundByEmail) {
 			throw new HttpException('Repeated email', 400);
 		}
-		const userFoundByName = await this.userRepository.findByEmail(
-			user.name || '',
+		const userFoundByName = await this.userRepository.findOneByUsername(
+			user.name,
 		);
-		if (userFoundByName.name === user.name) {
+		if (userFoundByName) {
 			throw new HttpException('Repeated name', 400);
 		}
 		return await this.create(user);

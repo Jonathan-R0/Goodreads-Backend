@@ -29,6 +29,13 @@
       "when": 1729619914119,
       "tag": "0003_known_wallop",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1729690135354,
+      "tag": "0004_breezy_wolfsbane",
+      "breakpoints": true
     }
   ]
 }

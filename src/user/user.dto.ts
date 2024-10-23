@@ -21,4 +21,9 @@ export class UserDto {
 	@IsNotEmpty()
 	@ApiProperty()
 	role: string;
+
+	@IsEmail()
+	@IsNotEmpty()
+	@ApiProperty()
+	biography: string;
 }

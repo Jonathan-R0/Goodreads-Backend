@@ -22,10 +22,8 @@ export class AuthService {
 		pass: string,
 	): Promise<{ id: number; access_token: string }> {
 		const user = await this.usersService.getUserByEmail(email);
-		if (
-			user &&
-			(await bcrypt.compare(bcrypt.hashSync(pass), user.password || ''))
-		) {
+		console.log(user.password, pass, bcrypt.hashSync(pass));
+		if (!(user && (await bcrypt.compare(pass, user.password || '')))) {
 			throw new UnauthorizedException();
 		}
 		return {

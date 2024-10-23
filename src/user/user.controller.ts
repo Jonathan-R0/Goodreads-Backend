@@ -135,14 +135,19 @@ export class UserController {
 
 	@Get('/:id/following/:otherId')
 	@ApiOperation({ summary: 'Check if following a user' })
-	@ApiResponse({ status: 200, description: 'Returns true if following, false otherwise.' })
+	@ApiResponse({
+		status: 200,
+		description: 'Returns true if following, false otherwise.',
+	})
 	@UseGuards(AuthGuard)
 	public async isFollowing(
 		@Param('id') id: number,
 		@Param('otherId') otherId: number,
 	): Promise<StandardResponse<boolean>> {
-		const isFollowing = await this.followService.isFollowing(Number(id), Number(otherId));
+		const isFollowing = await this.followService.isFollowing(
+			Number(id),
+			Number(otherId),
+		);
 		return success(isFollowing);
 	}
-
 }

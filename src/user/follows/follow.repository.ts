@@ -52,7 +52,10 @@ export class FollowRepository {
 			.map((r) => r.users);
 	}
 
-	public async isFollowing(followerId: number, followingId: number): Promise<boolean> {
+	public async isFollowing(
+		followerId: number,
+		followingId: number,
+	): Promise<boolean> {
 		const resp = await db
 			.select()
 			.from(followsTable)
@@ -62,7 +65,7 @@ export class FollowRepository {
 					eq(followsTable.followingId, followingId),
 				),
 			);
-	
-		return resp.length > 0; 
+
+		return resp.length > 0;
 	}
 }

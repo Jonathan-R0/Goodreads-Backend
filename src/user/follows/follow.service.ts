@@ -28,8 +28,10 @@ export class FollowService {
 		return this.followRepository.findFollowing(userId);
 	}
 
-	public async isFollowing(followerId: number, followingId: number): Promise<boolean> {
-        return await this.followRepository.isFollowing(followerId, followingId);
-    }
-
+	public async isFollowing(
+		followerId: number,
+		followingId: number,
+	): Promise<boolean> {
+		return await this.followRepository.isFollowing(followerId, followingId);
+	}
 }

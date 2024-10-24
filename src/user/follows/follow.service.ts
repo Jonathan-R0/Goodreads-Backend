@@ -27,4 +27,11 @@ export class FollowService {
 	public async getFollowing(userId: number): Promise<User[]> {
 		return this.followRepository.findFollowing(userId);
 	}
+
+	public async isFollowing(
+		followerId: number,
+		followingId: number,
+	): Promise<boolean> {
+		return await this.followRepository.isFollowing(followerId, followingId);
+	}
 }

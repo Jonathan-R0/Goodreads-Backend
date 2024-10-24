@@ -51,4 +51,21 @@ export class FollowRepository {
 			.filter((x): x is { users: User } => x !== null && x.users !== null)
 			.map((r) => r.users);
 	}
+
+	public async isFollowing(
+		followerId: number,
+		followingId: number,
+	): Promise<boolean> {
+		const resp = await db
+			.select()
+			.from(followsTable)
+			.where(
+				and(
+					eq(followsTable.followerId, followerId),
+					eq(followsTable.followingId, followingId),
+				),
+			);
+
+		return resp.length > 0;
+	}
 }

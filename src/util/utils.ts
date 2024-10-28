@@ -37,12 +37,6 @@ export function ApiPaged() {
 			type: Number,
 			description: 'Number of items per page',
 		}),
-		ApiQuery({
-			name: 'filter',
-			required: false,
-			type: String,
-			description: 'Filter string',
-		}),
 	);
 }
 

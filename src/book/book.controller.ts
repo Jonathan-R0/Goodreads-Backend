@@ -6,12 +6,13 @@ import {
 	Param,
 	Post,
 	Put,
+	Query,
 	UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { BookService } from './book.service';
 import { Book } from '@/book/book.entity';
-import { StandardResponse, success } from '@/util/utils';
+import { ApiPaged, PagedResult, StandardResponse, success } from '@/util/utils';
 import { BookDto } from './book.dto';
 import { AuthGuard } from '@/auth/auth.guard';
 
@@ -26,6 +27,42 @@ export class BookController {
 	@UseGuards(AuthGuard)
 	async getBook(@Param('id') id: number): Promise<StandardResponse<Book>> {
 		return success(await this.bookService.findById(Number(id)));
+	}
+
+	@Get('/')
+	@ApiOperation({ summary: 'List Books' })
+	@ApiResponse({
+		status: 200,
+		description: 'Returns a list of book objects.',
+	})
+	@ApiPaged()
+	@ApiQuery({
+		name: 'filterTitle',
+		required: false,
+		type: String,
+		description: 'Filter by book title',
+	})
+	@ApiQuery({
+		name: 'filterDescription',
+		required: false,
+		type: String,
+		description: 'Filter by book description',
+	})
+	@UseGuards(AuthGuard)
+	async listBooks(
+		@Query('page') page?: number,
+		@Query('pageSize') pageSize?: number,
+		@Query('filterName') filterName?: string,
+		@Query('filterDescription') filterDescription?: string,
+	): Promise<StandardResponse<PagedResult<Book[]>>> {
+		return success(
+			await this.bookService.list(
+				page,
+				pageSize,
+				filterName,
+				filterDescription,
+			),
+		);
 	}
 
 	@Post('/')

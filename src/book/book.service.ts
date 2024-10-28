@@ -2,7 +2,7 @@ import { BaseService } from '@/util/base.service';
 import { Injectable } from '@nestjs/common';
 import { booksTable } from './book.entity';
 import { BookRepository } from './book.repository';
-import { or, like } from 'drizzle-orm';
+import { and, like } from 'drizzle-orm';
 
 @Injectable()
 export class BookService extends BaseService<
@@ -16,12 +16,12 @@ export class BookService extends BaseService<
 	public async list(
 		page?: number,
 		pageSize?: number,
-		filterName?: string,
-		filterDescription?: string,
+		filterName: string = '',
+		filterDescription: string = '',
 	) {
 		return this.bookRepository.findAllWhere(
 			[
-				or(
+				and(
 					like(booksTable.title, `%${filterName}%`),
 					like(booksTable.description, `%${filterDescription}%`),
 				),

@@ -52,7 +52,7 @@ export class BookController {
 	async listBooks(
 		@Query('page') page?: number,
 		@Query('pageSize') pageSize?: number,
-		@Query('filterName') filterName?: string,
+		@Query('filterTitle') filterName?: string,
 		@Query('filterDescription') filterDescription?: string,
 	): Promise<StandardResponse<PagedResult<Book[]>>> {
 		return success(

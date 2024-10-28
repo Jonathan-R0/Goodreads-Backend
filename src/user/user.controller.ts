@@ -33,8 +33,7 @@ export class UserController {
 	@Get('/:id')
 	@ApiOperation({ summary: 'Get User' })
 	@ApiResponse({ status: 200, description: 'Returns a user object.' })
-	//TODO: uncomment this when auth is implemented in frontend
-	//@UseGuards(AuthGuard)
+	@UseGuards(AuthGuard)
 	async getUser(
 		@Param('id') id: number,
 	): Promise<StandardResponse<PasswordlessUser>> {

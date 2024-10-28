@@ -20,14 +20,14 @@ export class AuthService {
 	public async signIn(
 		email: string,
 		pass: string,
-	): Promise<{ id: number; access_token: string }> {
+	): Promise<{ id: number; access_token: string; role: string }> {
 		const user = await this.usersService.getUserByEmail(email);
-		console.log(user.password, pass, bcrypt.hashSync(pass));
 		if (!(user && (await bcrypt.compare(pass, user.password || '')))) {
 			throw new UnauthorizedException();
 		}
 		return {
 			id: user.id,
+			role: user.role!,
 			access_token: await this.jwtService.signAsync({
 				sub: user.email,
 				username: user.name,

@@ -33,7 +33,7 @@ export class AuthController {
 	@HttpCode(200)
 	public signIn(
 		@Body() signInDto: LoginDto,
-	): Promise<{ id: number; access_token: string }> {
+	): Promise<{ id: number; access_token: string; role: string }> {
 		return this.authService.signIn(signInDto.email, signInDto.password);
 	}
 

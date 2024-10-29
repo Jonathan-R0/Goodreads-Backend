@@ -10,6 +10,8 @@ import {
 } from 'drizzle-orm';
 import { PgColumn, PgTable } from 'drizzle-orm/pg-core';
 import { PagedResult } from '@/util/utils';
+import usersTable from '@/user/user.entity';
+import booksTable from '@/book/book.entity';
 
 type EntityReturn<TableType extends PgTable> = InferSelectModel<TableType>;
 type Entity<TableType extends PgTable> = InferInsertModel<TableType>;
@@ -48,14 +50,21 @@ export class BaseRepository<TableType extends PgTable> {
 			);
 	}
 
+	//Este find aplica unicamente a books por ahora, pero si se necesita en otra entidad hay que mover este a book repository porque solo sirve para eso
 	public async findAllWhere(
 		andsConditions: (SQLWrapper | undefined)[] = [],
 		page?: number,
 		pageSize?: number,
-	): Promise<PagedResult<EntityReturn<TableType>[]>> {
+	): Promise<any> {
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		const { password, ...rest } = getTableColumns(usersTable);
 		const partialResp = db
-			.select()
+			.select({
+				user: { ...rest },
+				book: booksTable,
+			})
 			.from(this.table)
+			.innerJoin(usersTable, eq(booksTable.author_id, usersTable.id))
 			.where(and(...andsConditions));
 
 		const resp = await (page && pageSize

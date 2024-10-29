@@ -48,17 +48,19 @@ export class BookController {
 		type: String,
 		description: 'Filter by book description',
 	})
-	@UseGuards(AuthGuard)
+	// @UseGuards(AuthGuard)
 	async listBooks(
 		@Query('page') page?: number,
 		@Query('pageSize') pageSize?: number,
 		@Query('filterTitle') filterName?: string,
 		@Query('filterDescription') filterDescription?: string,
 	): Promise<StandardResponse<PagedResult<Book[]>>> {
+		const pageParsed = parseInt(String(page ?? 1), 10);
+		const pageSizeParsed = parseInt(String(pageSize ?? 15), 10);
 		return success(
 			await this.bookService.list(
-				page,
-				pageSize,
+				pageParsed,
+				pageSizeParsed,
 				filterName,
 				filterDescription,
 			),

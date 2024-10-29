@@ -2,6 +2,7 @@ import { and, eq } from 'drizzle-orm/expressions';
 import db from '@/config/db.config';
 import { takeUniqueOrAct, takeUniqueOrThrow } from '@/util/utils';
 import {
+	count,
 	getTableColumns,
 	InferInsertModel,
 	InferSelectModel,
@@ -56,12 +57,20 @@ export class BaseRepository<TableType extends PgTable> {
 			.select()
 			.from(this.table)
 			.where(and(...andsConditions));
+
 		const resp = await (page && pageSize
 			? partialResp.limit(pageSize).offset((page - 1) * pageSize)
 			: partialResp);
+
+		const totalResp = await db
+			.select({ count: count() })
+			.from(this.table)
+			.where(and(...andsConditions));
+
+		const totalCount = totalResp[0]?.count || 0; // Accede al total de registros
 		return {
 			data: resp,
-			total: resp.length,
+			total: totalCount,
 			page: page || 0,
 			pageSize: pageSize || 0,
 		};

@@ -24,7 +24,7 @@ export class BookController {
 	@Get('/:id')
 	@ApiOperation({ summary: 'Get Book' })
 	@ApiResponse({ status: 200, description: 'Returns a book object.' })
-	@UseGuards(AuthGuard)
+	// @UseGuards(AuthGuard)
 	async getBook(@Param('id') id: number): Promise<StandardResponse<Book>> {
 		return success(await this.bookService.findById(Number(id)));
 	}

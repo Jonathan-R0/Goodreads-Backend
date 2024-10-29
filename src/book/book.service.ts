@@ -30,4 +30,10 @@ export class BookService extends BaseService<
 			pageSize,
 		);
 	}
+
+	// public async findById(
+	// 	id: number,
+	// ) {
+	// 	return this.bookRepository.findById(id).join();
+	// }
 }

@@ -24,7 +24,7 @@ export class BookController {
 	@Get('/:id')
 	@ApiOperation({ summary: 'Get Book' })
 	@ApiResponse({ status: 200, description: 'Returns a book object.' })
-	@UseGuards(AuthGuard)
+	// @UseGuards(AuthGuard)
 	async getBook(@Param('id') id: number): Promise<StandardResponse<Book>> {
 		return success(await this.bookService.findById(Number(id)));
 	}
@@ -48,17 +48,19 @@ export class BookController {
 		type: String,
 		description: 'Filter by book description',
 	})
-	@UseGuards(AuthGuard)
+	// @UseGuards(AuthGuard)
 	async listBooks(
 		@Query('page') page?: number,
 		@Query('pageSize') pageSize?: number,
 		@Query('filterTitle') filterName?: string,
 		@Query('filterDescription') filterDescription?: string,
 	): Promise<StandardResponse<PagedResult<Book[]>>> {
+		const pageParsed = parseInt(String(page ?? 1), 10);
+		const pageSizeParsed = parseInt(String(pageSize ?? 15), 10);
 		return success(
 			await this.bookService.list(
-				page,
-				pageSize,
+				pageParsed,
+				pageSizeParsed,
 				filterName,
 				filterDescription,
 			),

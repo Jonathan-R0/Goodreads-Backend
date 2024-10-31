@@ -1,17 +1,13 @@
 import { and, eq } from 'drizzle-orm/expressions';
 import db from '@/config/db.config';
-import { takeUniqueOrAct, takeUniqueOrThrow } from '@/util/utils';
+import { PagedResult, takeUniqueOrAct, takeUniqueOrThrow } from '@/util/utils';
 import {
-	count,
 	getTableColumns,
 	InferInsertModel,
 	InferSelectModel,
 	SQLWrapper,
 } from 'drizzle-orm';
 import { PgColumn, PgTable } from 'drizzle-orm/pg-core';
-import { PagedResult } from '@/util/utils';
-import usersTable from '@/user/user.entity';
-import booksTable from '@/book/book.entity';
 
 type EntityReturn<TableType extends PgTable> = InferSelectModel<TableType>;
 type Entity<TableType extends PgTable> = InferInsertModel<TableType>;
@@ -50,36 +46,21 @@ export class BaseRepository<TableType extends PgTable> {
 			);
 	}
 
-	//Este find aplica unicamente a books por ahora, pero si se necesita en otra entidad hay que mover este a book repository porque solo sirve para eso
 	public async findAllWhere(
 		andsConditions: (SQLWrapper | undefined)[] = [],
 		page?: number,
 		pageSize?: number,
-	): Promise<any> {
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		const { password, ...rest } = getTableColumns(usersTable);
+	): Promise<PagedResult<EntityReturn<TableType>[]>> {
 		const partialResp = db
-			.select({
-				user: { ...rest },
-				book: booksTable,
-			})
+			.select()
 			.from(this.table)
-			.innerJoin(usersTable, eq(booksTable.author_id, usersTable.id))
 			.where(and(...andsConditions));
-
 		const resp = await (page && pageSize
 			? partialResp.limit(pageSize).offset((page - 1) * pageSize)
 			: partialResp);
-
-		const totalResp = await db
-			.select({ count: count() })
-			.from(this.table)
-			.where(and(...andsConditions));
-
-		const totalCount = totalResp[0]?.count || 0; // Accede al total de registros
 		return {
 			data: resp,
-			total: totalCount,
+			total: resp.length,
 			page: page || 0,
 			pageSize: pageSize || 0,
 		};

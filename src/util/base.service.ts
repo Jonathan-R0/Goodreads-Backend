@@ -14,22 +14,22 @@ export class BaseService<
 	constructor(private readonly repository: R) {}
 
 	async create(entity: Entity<TableType>): Promise<EntityReturn<TableType>> {
-		return this.repository.create(entity);
+		return await this.repository.create(entity);
 	}
 
 	async update(
 		entity: Partial<Entity<TableType> & { id: PrimaryKey<TableType> }>,
 	): Promise<EntityReturn<TableType>> {
-		return this.repository.update(entity);
+		return await this.repository.update(entity);
 	}
 
 	async delete(id: PrimaryKey<TableType>): Promise<EntityReturn<TableType>> {
-		return this.repository.delete(id);
+		return await this.repository.delete(id);
 	}
 
 	async findById(
 		id: PrimaryKey<TableType>,
 	): Promise<EntityReturn<TableType>> {
-		return this.repository.findById(id);
+		return await this.repository.findById(id);
 	}
 }

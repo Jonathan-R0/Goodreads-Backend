@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UserService as UserService } from './user.service';
-import { PasswordlessUser } from '@/user/user.entity';
+import { PasswordlessUser, User } from '@/user/user.entity';
 import {
 	StandardResponse,
 	success,
@@ -21,6 +21,7 @@ import { UserDto } from './user.dto';
 import { FollowService } from './follows/follow.service';
 import * as bcrypt from 'bcryptjs';
 import { AuthGuard } from '@/auth/auth.guard';
+import { RecommendedService } from './recommended/recommended.service';
 
 @ApiTags('Users')
 @Controller('user')
@@ -28,6 +29,7 @@ export class UserController {
 	constructor(
 		private readonly userService: UserService,
 		private readonly followService: FollowService,
+		private readonly recommendedService: RecommendedService,
 	) {}
 
 	@Get('/:id')
@@ -148,5 +150,68 @@ export class UserController {
 			Number(otherId),
 		);
 		return success(isFollowing);
+	}
+
+	@Post(':id/recommend/:otherId')
+	@ApiOperation({ summary: 'Recommend User' })
+	@ApiResponse({ status: 200, description: 'Recommend a user.' })
+	@UseGuards(AuthGuard)
+	public async recomendAuthor(
+		@Param('id') id: number,
+		@Param('otherId') otherId: number,
+	): Promise<StandardResponse<void>> {
+		return success(
+			await this.recommendedService.recommend(
+				Number(id),
+				Number(otherId),
+			),
+		);
+	}
+
+	@Delete(':id/unrecommend/:otherId')
+	@ApiOperation({ summary: 'Unrecommend author' })
+	@ApiResponse({ status: 200, description: 'Unrecommend a author.' })
+	@UseGuards(AuthGuard)
+	public async unrecommend(
+		@Param('id') id: number,
+		@Param('otherId') otherId: number,
+	): Promise<StandardResponse<void>> {
+		return success(
+			await this.recommendedService.unrecommend(
+				Number(id),
+				Number(otherId),
+			),
+		);
+	}
+
+	@Get('/recommended/:id')
+	@ApiOperation({ summary: 'Get Recommended Authors' })
+	@ApiResponse({
+		status: 200,
+		description: 'Returns a list of recommended authors',
+	})
+	@UseGuards(AuthGuard)
+	public async getRecommendedAuthor(
+		@Param('id') userId: number,
+	): Promise<Omit<User, 'password'>[]> {
+		return await this.recommendedService.getRecommended(Number(userId));
+	}
+
+	@Get('/:id/recommend/:otherId')
+	@ApiOperation({ summary: 'Check if recommend a user' })
+	@ApiResponse({
+		status: 200,
+		description: 'Returns true if recommend, false otherwise.',
+	})
+	@UseGuards(AuthGuard)
+	public async isRecommend(
+		@Param('id') id: number,
+		@Param('otherId') otherId: number,
+	): Promise<StandardResponse<boolean>> {
+		const isRecommend = await this.recommendedService.isRecommended(
+			Number(id),
+			Number(otherId),
+		);
+		return success(isRecommend);
 	}
 }

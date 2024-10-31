@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { and, like } from 'drizzle-orm';
-import bookInProgressTable from './bookinprogress.entity';
+import { bookInProgressTable } from './bookinprogress.entity';
 import { BaseService } from '@/util/base.service';
 import { BookInProgressRepository } from './bookinprogrees.repository';
 

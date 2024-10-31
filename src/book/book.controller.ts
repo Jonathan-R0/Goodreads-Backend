@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { BookService } from './book.service';
-import { Book } from '@/book/book.entity';
+import { Book, BookAndAuthor } from '@/book/book.entity';
 import { ApiPaged, PagedResult, StandardResponse, success } from '@/util/utils';
 import { BookDto } from './book.dto';
 import { AuthGuard } from '@/auth/auth.guard';
@@ -29,7 +29,7 @@ export class BookController {
 	@Get('/:id')
 	@ApiOperation({ summary: 'Get Book' })
 	@ApiResponse({ status: 200, description: 'Returns a book object.' })
-	// @UseGuards(AuthGuard)
+	@UseGuards(AuthGuard)
 	async getBook(@Param('id') id: number): Promise<StandardResponse<Book>> {
 		return success(await this.bookService.findById(Number(id)));
 	}
@@ -53,20 +53,18 @@ export class BookController {
 		type: String,
 		description: 'Filter by book description',
 	})
-	// @UseGuards(AuthGuard)
+	@UseGuards(AuthGuard)
 	async listBooks(
 		@Query('page') page?: number,
 		@Query('pageSize') pageSize?: number,
-		@Query('filterTitle') filterName?: string,
+		@Query('filterTitle') filterTitle?: string,
 		@Query('filterDescription') filterDescription?: string,
-	): Promise<StandardResponse<PagedResult<Book[]>>> {
-		const pageParsed = parseInt(String(page ?? 1), 10);
-		const pageSizeParsed = parseInt(String(pageSize ?? 15), 10);
+	): Promise<StandardResponse<PagedResult<BookAndAuthor[]>>> {
 		return success(
 			await this.bookService.list(
-				pageParsed,
-				pageSizeParsed,
-				filterName,
+				parseInt(String(page ?? 1), 10),
+				parseInt(String(pageSize ?? 15), 10),
+				filterTitle,
 				filterDescription,
 			),
 		);

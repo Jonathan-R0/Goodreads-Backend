@@ -7,6 +7,7 @@ import {
 	Post,
 	Put,
 	Query,
+	Req,
 	UseGuards,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
@@ -15,11 +16,15 @@ import { Book } from '@/book/book.entity';
 import { ApiPaged, PagedResult, StandardResponse, success } from '@/util/utils';
 import { BookDto } from './book.dto';
 import { AuthGuard } from '@/auth/auth.guard';
+import { UserService } from '@/user/user.service';
 
 @ApiTags('Books')
 @Controller('books')
 export class BookController {
-	constructor(private readonly bookService: BookService) {}
+	constructor(
+		private readonly bookService: BookService,
+		private readonly userService: UserService,
+	) {}
 
 	@Get('/:id')
 	@ApiOperation({ summary: 'Get Book' })
@@ -99,7 +104,13 @@ export class BookController {
 	@UseGuards(AuthGuard)
 	public async deleteBook(
 		@Param('id') id: string,
+		@Req() req: Request & { user: Record<string, any> },
 	): Promise<StandardResponse<Book>> {
+		const book = await this.bookService.findBooksAndAuthorsById(Number(id));
+		const user = await this.userService.getUserByEmail(req.user.sub);
+		if (Number(book.book.author_id) !== Number(user.id)) {
+			throw new Error('You can only delete your own books');
+		}
 		return success(await this.bookService.delete(id));
 	}
 }

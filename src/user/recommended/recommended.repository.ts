@@ -8,7 +8,10 @@ import usersTable, { User } from '../user.entity';
 export class RecommendedRepository {
 	constructor() {}
 
-	public async delete(recommendingId: number, recommendedId: number): Promise<void> {
+	public async delete(
+		recommendingId: number,
+		recommendedId: number,
+	): Promise<void> {
 		await db
 			.delete(recommendedTable)
 			.where(
@@ -19,28 +22,35 @@ export class RecommendedRepository {
 			);
 	}
 
-	public async create(recommendingId: number, recommendedId: number): Promise<void> {
+	public async create(
+		recommendingId: number,
+		recommendedId: number,
+	): Promise<void> {
 		await db.insert(recommendedTable).values({
 			recommendingId,
 			recommendedId,
 		});
 	}
 
-    public async findRecommended(userId: number): Promise<Omit<User, 'password'>[]> {
-        const resp = await db
-            .select({
-                id: usersTable.id,
-                name: usersTable.name,
-                role: usersTable.role,
-                biography: usersTable.biography,
-            })
-            .from(usersTable)
-            .fullJoin(recommendedTable, eq(usersTable.id, recommendedTable.recommendingId))
-            .where(eq(recommendedTable.recommendedId, userId));
-    
-        return resp as Omit<User, 'password'>[];
-    }    
-    
+	public async findRecommended(
+		userId: number,
+	): Promise<Omit<User, 'password'>[]> {
+		const resp = await db
+			.select({
+				id: usersTable.id,
+				name: usersTable.name,
+				role: usersTable.role,
+				biography: usersTable.biography,
+			})
+			.from(usersTable)
+			.fullJoin(
+				recommendedTable,
+				eq(usersTable.id, recommendedTable.recommendingId),
+			)
+			.where(eq(recommendedTable.recommendedId, userId));
+
+		return resp as Omit<User, 'password'>[];
+	}
 
 	public async isRecommended(
 		recommendingId: number,

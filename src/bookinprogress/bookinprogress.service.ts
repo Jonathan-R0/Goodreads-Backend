@@ -15,7 +15,6 @@ export class BookInProgressService extends BaseService<
 		super(bookInProgressRepository);
 	}
 
-
 	public async list(
 		page?: number,
 		pageSize?: number,
@@ -26,7 +25,10 @@ export class BookInProgressService extends BaseService<
 			[
 				and(
 					like(bookInProgressTable.title, `%${filterName}%`),
-					like(bookInProgressTable.description, `%${filterDescription}%`),
+					like(
+						bookInProgressTable.description,
+						`%${filterDescription}%`,
+					),
 				),
 			],
 			page,
@@ -38,20 +40,29 @@ export class BookInProgressService extends BaseService<
 		return await this.bookInProgressRepository.findBooksAndAuthorsById(id);
 	}
 
-  async publishBook(bookInProgressId: number) {
-    const bookInProgress = await this.bookInProgressRepository.findById(bookInProgressId);
+	async publishBook(bookInProgressId: number) {
+		const bookInProgress =
+			await this.bookInProgressRepository.findById(bookInProgressId);
 
-    if (bookInProgress.isPublished) {
-        throw new HttpException('This book is already published.', HttpStatus.BAD_REQUEST);
-    }
+		if (bookInProgress.isPublished) {
+			throw new HttpException(
+				'This book is already published.',
+				HttpStatus.BAD_REQUEST,
+			);
+		}
 
-    if (!bookInProgress.progress_percentage || (bookInProgress.progress_percentage < 100)) {
-        throw new HttpException('Progress must be 100% to publish the book.', HttpStatus.BAD_REQUEST);
-    }
-    
-    bookInProgress.isPublished = true;
-    await this.bookInProgressRepository.update(bookInProgress);
-    return bookInProgress;
-  }
+		if (
+			!bookInProgress.progress_percentage ||
+			bookInProgress.progress_percentage < 100
+		) {
+			throw new HttpException(
+				'Progress must be 100% to publish the book.',
+				HttpStatus.BAD_REQUEST,
+			);
+		}
 
+		bookInProgress.isPublished = true;
+		await this.bookInProgressRepository.update(bookInProgress);
+		return bookInProgress;
+	}
 }

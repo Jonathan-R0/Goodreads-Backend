@@ -3,27 +3,39 @@ import { Review } from './reviews.entity';
 import { CreateReviewsDto } from '../dto/create-reviews.dto';
 
 export class ReviewsService {
-    private reviewsRepo = new ReviewsRepository();
+	private reviewsRepo = new ReviewsRepository();
 
-    async createReview(bookId: number, reviewDto: CreateReviewsDto): Promise<void> {
-        await this.reviewsRepo.create(bookId, reviewDto);
-    }
-    
-    async getReviewsForBook(bookId: number, page: number, pageSize: number): Promise<Review[]> {
-        const reviews = await this.reviewsRepo.findByBookId(bookId, page, pageSize);
-        return reviews;
-    }
+	async createReview(
+		bookId: number,
+		reviewDto: CreateReviewsDto,
+	): Promise<void> {
+		await this.reviewsRepo.create(bookId, reviewDto);
+	}
 
-    async getAverageRatingForBook(bookId: number): Promise<number | null> {
-      const reviews = await this.reviewsRepo.findAllByBookId(bookId);
+	async getReviewsForBook(
+		bookId: number,
+		page: number,
+		pageSize: number,
+	): Promise<Review[]> {
+		const reviews = await this.reviewsRepo.findByBookId(
+			bookId,
+			page,
+			pageSize,
+		);
+		return reviews;
+	}
 
-      if (reviews.length === 0) return null;
+	async getAverageRatingForBook(bookId: number): Promise<number | null> {
+		const reviews = await this.reviewsRepo.findAllByBookId(bookId);
 
-      const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
-      const averageRating = totalRating / reviews.length;
+		if (reviews.length === 0) return null;
 
-      return averageRating;
-  }
+		const totalRating = reviews.reduce(
+			(sum, review) => sum + review.rating,
+			0,
+		);
+		const averageRating = totalRating / reviews.length;
 
-
+		return averageRating;
+	}
 }

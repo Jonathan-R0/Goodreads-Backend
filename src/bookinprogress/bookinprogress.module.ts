@@ -6,15 +6,10 @@ import { UserModule } from '@/user/user.module';
 import { BookInProgressRepository } from './bookinprogrees.repository';
 dotenv.config();
 
-
 @Module({
-  imports: [UserModule],
-  controllers: [BookinprogressController],
-  providers: [BookInProgressService,  BookInProgressRepository],
-  exports: [BookInProgressService],
+	imports: [UserModule],
+	controllers: [BookinprogressController],
+	providers: [BookInProgressService, BookInProgressRepository],
+	exports: [BookInProgressService],
 })
 export class BookInProgressModule {}
-
-
-
-

@@ -4,7 +4,9 @@ import { User } from '../user.entity';
 
 @Injectable()
 export class RecommendedService {
-	constructor(private readonly recomemendedRepository: RecommendedRepository) {}
+	constructor(
+		private readonly recomemendedRepository: RecommendedRepository,
+	) {}
 
 	public async recommend(
 		recommendingId: number,
@@ -20,7 +22,9 @@ export class RecommendedService {
 		await this.recomemendedRepository.delete(recommendingId, recommendedId);
 	}
 
-	public async getRecommended(userId: number): Promise<Omit<User, 'password'>[]> {
+	public async getRecommended(
+		userId: number,
+	): Promise<Omit<User, 'password'>[]> {
 		return this.recomemendedRepository.findRecommended(userId);
 	}
 
@@ -28,6 +32,9 @@ export class RecommendedService {
 		recommendingId: number,
 		recommendedId: number,
 	): Promise<boolean> {
-		return await this.recomemendedRepository.isRecommended(recommendingId, recommendedId);
+		return await this.recomemendedRepository.isRecommended(
+			recommendingId,
+			recommendedId,
+		);
 	}
 }

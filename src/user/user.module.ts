@@ -12,7 +12,14 @@ dotenv.config();
 @Module({
 	imports: [],
 	controllers: [UserController],
-	providers: [UserService, FollowService, UserRepository, FollowRepository, RecommendedService, RecommendedRepository],
+	providers: [
+		UserService,
+		FollowService,
+		UserRepository,
+		FollowRepository,
+		RecommendedService,
+		RecommendedRepository,
+	],
 	exports: [UserService],
 })
 export class UserModule {}

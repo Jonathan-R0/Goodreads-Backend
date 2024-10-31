@@ -1,4 +1,4 @@
-import usersTable from '@/user/user.entity';
+import usersTable, { User } from '@/user/user.entity';
 import { InferSelectModel } from 'drizzle-orm';
 import { pgTable, integer, serial, varchar, text } from 'drizzle-orm/pg-core';
 
@@ -17,3 +17,5 @@ export const booksTable = pgTable('books', {
 export default booksTable;
 
 export type Book = InferSelectModel<typeof booksTable>;
+
+export type BookAndAuthor = { user: Omit<User, 'password'>; book: Book };

@@ -19,7 +19,7 @@ export class BookService extends BaseService<
 		filterName: string = '',
 		filterDescription: string = '',
 	) {
-		return this.bookRepository.findAllWhere(
+		return await this.bookRepository.findAllBooksAndAuthorsWhere(
 			[
 				and(
 					like(booksTable.title, `%${filterName}%`),
@@ -31,9 +31,7 @@ export class BookService extends BaseService<
 		);
 	}
 
-	// public async findById(
-	// 	id: number,
-	// ) {
-	// 	return this.bookRepository.findById(id).join();
-	// }
+	public async findBooksAndAuthorsById(id: number) {
+		return await this.bookRepository.findBooksAndAuthorsById(id);
+	}
 }

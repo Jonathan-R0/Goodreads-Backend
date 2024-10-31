@@ -14,7 +14,7 @@ import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { BookService } from './book.service';
 import { Book, BookAndAuthor } from '@/book/book.entity';
 import { ApiPaged, PagedResult, StandardResponse, success } from '@/util/utils';
-import { BookDto } from './book.dto';
+import { BookDto } from './dto/book.dto';
 import { AuthGuard } from '@/auth/auth.guard';
 import { UserService } from '@/user/user.service';
 

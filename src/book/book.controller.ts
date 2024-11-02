@@ -30,8 +30,12 @@ export class BookController {
 	@ApiOperation({ summary: 'Get Book' })
 	@ApiResponse({ status: 200, description: 'Returns a book object.' })
 	@UseGuards(AuthGuard)
-	async getBook(@Param('id') id: number): Promise<StandardResponse<BookAndAuthor>> {
-		return success(await this.bookService.findBooksAndAuthorsById(Number(id)));
+	async getBook(
+		@Param('id') id: number,
+	): Promise<StandardResponse<BookAndAuthor>> {
+		return success(
+			await this.bookService.findBooksAndAuthorsById(Number(id)),
+		);
 	}
 
 	@Get('/')

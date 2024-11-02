@@ -41,13 +41,14 @@ export class RecommendedRepository {
 				name: usersTable.name,
 				role: usersTable.role,
 				biography: usersTable.biography,
+                email: usersTable.email,
 			})
 			.from(usersTable)
 			.fullJoin(
 				recommendedTable,
-				eq(usersTable.id, recommendedTable.recommendingId),
+				eq(usersTable.id, recommendedTable.recommendedId),
 			)
-			.where(eq(recommendedTable.recommendedId, userId));
+			.where(eq(recommendedTable.recommendingId, userId));
 
 		return resp as Omit<User, 'password'>[];
 	}

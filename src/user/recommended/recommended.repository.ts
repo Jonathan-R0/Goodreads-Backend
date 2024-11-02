@@ -41,7 +41,7 @@ export class RecommendedRepository {
 				name: usersTable.name,
 				role: usersTable.role,
 				biography: usersTable.biography,
-                email: usersTable.email,
+				email: usersTable.email,
 			})
 			.from(usersTable)
 			.fullJoin(

@@ -3,7 +3,6 @@ import {
 	serial,
 	integer,
 	text,
-	decimal,
 	timestamp,
 	real,
 } from 'drizzle-orm/pg-core';

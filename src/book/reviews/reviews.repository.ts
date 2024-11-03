@@ -2,6 +2,8 @@ import db from '@/config/db.config';
 import { reviewsTable, Review } from './reviews.entity';
 import { eq } from 'drizzle-orm/expressions';
 import { CreateReviewsDto } from '../dto/create-reviews.dto';
+import { PagedResult } from '@/util/utils';
+import { count, desc } from 'drizzle-orm';
 
 export class ReviewsRepository {
 	async create(bookId: number, reviewDto: CreateReviewsDto) {
@@ -17,7 +19,7 @@ export class ReviewsRepository {
 		bookId: number,
 		page: number,
 		pageSize: number,
-	): Promise<Review[]> {
+	): Promise<PagedResult<Review[]>> {
 		const offset = (page - 1) * pageSize;
 		const resp = await db
 			.select({
@@ -30,11 +32,21 @@ export class ReviewsRepository {
 			})
 			.from(reviewsTable)
 			.where(eq(reviewsTable.bookId, bookId))
-			.orderBy(reviewsTable.created_at)
+			.orderBy(desc(reviewsTable.created_at))
 			.limit(pageSize)
 			.offset(offset);
 
-		return resp as Review[];
+		const totalCount = await db
+			.select({ count: count() })
+			.from(reviewsTable)
+			.where(eq(reviewsTable.bookId, bookId));
+
+		return {
+			data: resp as Review[],
+			total: totalCount[0]?.count || 0,
+			page: page,
+			pageSize: pageSize,
+		};
 	}
 
 	async findAllByBookId(bookId: number): Promise<Review[]> {

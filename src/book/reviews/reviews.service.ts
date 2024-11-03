@@ -1,6 +1,7 @@
 import { ReviewsRepository } from './reviews.repository';
 import { Review } from './reviews.entity';
 import { CreateReviewsDto } from '../dto/create-reviews.dto';
+import { PagedResult } from '@/util/utils';
 
 export class ReviewsService {
 	private reviewsRepo = new ReviewsRepository();
@@ -16,7 +17,7 @@ export class ReviewsService {
 		bookId: number,
 		page: number,
 		pageSize: number,
-	): Promise<Review[]> {
+	): Promise<PagedResult<Review[]>> {
 		const reviews = await this.reviewsRepo.findByBookId(
 			bookId,
 			page,

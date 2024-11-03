@@ -10,7 +10,7 @@ import {
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ReviewsService } from './reviews.service';
 import { Review } from './reviews.entity';
-import { StandardResponse, success } from '@/util/utils';
+import { PagedResult, StandardResponse, success } from '@/util/utils';
 import { AuthGuard } from '@/auth/auth.guard';
 import { CreateReviewsDto } from '../dto/create-reviews.dto';
 
@@ -36,13 +36,13 @@ export class ReviewsController {
 	@ApiResponse({ status: 200, description: 'Returns a list of reviews.' })
 	public async getReviewsForBook(
 		@Param('bookId') bookId: number,
-		@Query('page') page: number,
-		@Query('pageSize') pageSize: number,
-	): Promise<StandardResponse<Review[]>> {
+		@Query('page') page: string,
+		@Query('pageSize') pageSize: string,
+	): Promise<StandardResponse<PagedResult<Review[]>>> {
 		const reviews = await this.reviewsService.getReviewsForBook(
 			bookId,
-			page,
-			pageSize,
+			parseInt(page),
+			parseInt(pageSize),
 		);
 		return success(reviews);
 	}

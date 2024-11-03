@@ -4,6 +4,7 @@ import {
 	Delete,
 	Get,
 	Param,
+	Req,
 	Post,
 	Put,
 	UseGuards,
@@ -31,6 +32,22 @@ export class UserController {
 		private readonly followService: FollowService,
 		private readonly recommendedService: RecommendedService,
 	) {}
+
+	@Get('/follow/recommended')
+	@ApiOperation({ summary: 'Get Recommended Authors by Authors I follow' })
+	@ApiResponse({
+		status: 200,
+		description: 'Returns a list of recommended authors',
+	})
+	@UseGuards(AuthGuard)
+	public async getRecommendedAuthorsByFollowedAuthors(
+		@Req() req: Request & { user: Record<string, any> },
+	) {
+		const user = await this.userService.getUserByEmail(req.user.sub);
+		return await this.recommendedService.getRecommendedAuthorsByFollowedAuthors(
+			user,
+		);
+	}
 
 	@Get('/:id')
 	@ApiOperation({ summary: 'Get User' })
@@ -208,10 +225,11 @@ export class UserController {
 		@Param('id') id: number,
 		@Param('otherId') otherId: number,
 	): Promise<StandardResponse<boolean>> {
-		const isRecommend = await this.recommendedService.isRecommended(
-			Number(id),
-			Number(otherId),
+		return success(
+			await this.recommendedService.isRecommended(
+				Number(id),
+				Number(otherId),
+			),
 		);
-		return success(isRecommend);
 	}
 }

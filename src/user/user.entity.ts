@@ -15,3 +15,8 @@ export default usersTable;
 export type User = InferSelectModel<typeof usersTable>;
 
 export type PasswordlessUser = Omit<User, 'password'>;
+
+export type AuthorRecommendationPair = {
+	recommendedName: string | null;
+	recommendations: PasswordlessUser[];
+};

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { RecommendedRepository } from './recommended.repository';
-import { User } from '../user.entity';
+import { AuthorRecommendationPair, User } from '../user.entity';
 import { FollowService } from '../follows/follow.service';
 
 @Injectable()
@@ -42,13 +42,16 @@ export class RecommendedService {
 
 	public async getRecommendedAuthorsByFollowedAuthors(
 		user: User,
-	): Promise<Omit<User, 'password'>[]> {
+	): Promise<AuthorRecommendationPair[]> {
 		const followedAuthors = await this.followService.getFollowing(user.id);
 		return (
 			await Promise.all(
-				followedAuthors.map(
-					async (author) => await this.getRecommended(author.id),
-				),
+				followedAuthors.map(async (author) => {
+					return {
+						recommendedName: author.name,
+						recommendations: await this.getRecommended(author.id),
+					};
+				}),
 			)
 		).flat();
 	}

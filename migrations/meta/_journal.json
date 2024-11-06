@@ -50,6 +50,20 @@
 			"when": 1730406524068,
 			"tag": "0006_sudden_princess_powerful",
 			"breakpoints": true
+		},
+		{
+			"idx": 7,
+			"version": "7",
+			"when": 1730909570407,
+			"tag": "0007_sharp_hellfire_club",
+			"breakpoints": true
+		},
+		{
+			"idx": 8,
+			"version": "7",
+			"when": 1730909910322,
+			"tag": "0008_free_viper",
+			"breakpoints": true
 		}
 	]
 }

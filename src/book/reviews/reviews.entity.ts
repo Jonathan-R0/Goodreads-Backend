@@ -12,9 +12,9 @@ import { InferSelectModel } from 'drizzle-orm';
 
 export const reviewsTable = pgTable('reviews', {
 	id: serial('id').primaryKey(),
-	bookId: integer('bookInProgressTable_id')
+	bookId: integer('book_id')
 		.notNull()
-		.references(() => bookTable.id),
+		.references(() => bookTable.id, { onDelete: 'cascade' }),
 	userId: integer('user_id')
 		.notNull()
 		.references(() => usersTable.id),

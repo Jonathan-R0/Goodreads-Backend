@@ -7,7 +7,7 @@ export const commentsTable = pgTable('comments', {
 	id: serial('id').primaryKey(),
 	bookId: integer('bookInProgressTable_id')
 		.notNull()
-		.references(() => bookInProgressTable.id),
+		.references(() => bookInProgressTable.id, { onDelete: 'cascade' }),
 	userId: integer('user_id')
 		.notNull()
 		.references(() => usersTable.id),

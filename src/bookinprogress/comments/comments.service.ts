@@ -1,7 +1,7 @@
 import { CommentsRepository } from './comments.repository';
 import { Comment } from './comments.entity';
 import { CreateCommentsDto } from '../dto/create-comments.dto';
-import { PagedResult } from '@/util/utils';  
+import { PagedResult } from '@/util/utils';
 
 export class CommentsService {
 	private commentsRepo = new CommentsRepository();
@@ -22,9 +22,13 @@ export class CommentsService {
 		page: number,
 		pageSize: number,
 	): Promise<PagedResult<Comment[]>> {
-		const comments = await this.commentsRepo.findByBookId(bookId, page, pageSize);
+		const comments = await this.commentsRepo.findByBookId(
+			bookId,
+			page,
+			pageSize,
+		);
 		const totalCount = await this.commentsRepo.countByBookId(bookId);
-		
+
 		return {
 			data: comments,
 			total: totalCount,

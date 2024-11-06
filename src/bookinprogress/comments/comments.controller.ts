@@ -13,6 +13,7 @@ import { Comment } from './comments.entity';
 import { StandardResponse, success } from '@/util/utils';
 import { AuthGuard } from '@/auth/auth.guard';
 import { CreateCommentsDto } from '../dto/create-comments.dto';
+import { PagedResult } from '@/util/utils';  
 
 @ApiTags('Comments')
 @Controller('comments')
@@ -27,25 +28,22 @@ export class CommentsController {
 		@Param('bookId') bookId: number,
 		@Body() commentDto: CreateCommentsDto,
 	): Promise<StandardResponse<void>> {
-		const comment = await this.commentsService.createComment(
-			bookId,
-			commentDto,
-		);
-		return success(comment);
+		await this.commentsService.createComment(bookId, commentDto);
+		return success();
 	}
 
 	@Get('/:bookId/')
 	@ApiOperation({ summary: 'Get Comments for a Book' })
-	@ApiResponse({ status: 200, description: 'Returns a list of comments.' })
+	@ApiResponse({ status: 200, description: 'Returns a paginated list of comments.' })
 	public async getCommentsForBook(
 		@Param('bookId') bookId: number,
-		@Query('page') page: number,
-		@Query('pageSize') pageSize: number,
-	): Promise<StandardResponse<Comment[]>> {
+		@Query('page') page: string,
+		@Query('pageSize') pageSize: string,
+	): Promise<StandardResponse<PagedResult<Comment[]>>> {
 		const comments = await this.commentsService.getCommentsForBook(
 			bookId,
-			page,
-			pageSize,
+			parseInt(page),
+			parseInt(pageSize),
 		);
 		return success(comments);
 	}

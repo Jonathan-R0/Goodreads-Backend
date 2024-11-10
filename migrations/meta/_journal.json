@@ -64,6 +64,13 @@
 			"when": 1730909910322,
 			"tag": "0008_free_viper",
 			"breakpoints": true
+		},
+		{
+			"idx": 9,
+			"version": "7",
+			"when": 1731196000466,
+			"tag": "0009_curved_doorman",
+			"breakpoints": true
 		}
 	]
 }

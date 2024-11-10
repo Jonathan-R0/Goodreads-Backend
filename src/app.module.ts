@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { BookInProgressModule } from './bookinprogress/bookinprogress.module';
 import { ReviewModule } from './book/reviews/reviews.module';
 import { CommentsModule } from './bookinprogress/comments/comments.module';
+import { QuestionsModule } from './questions/questions.module';
 
 @Module({
 	imports: [
@@ -15,6 +16,7 @@ import { CommentsModule } from './bookinprogress/comments/comments.module';
 		BookInProgressModule,
 		ReviewModule,
 		CommentsModule,
+		QuestionsModule,
 	],
 	controllers: [BasicController],
 	providers: [],

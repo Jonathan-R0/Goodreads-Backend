@@ -38,7 +38,6 @@ export class QuestionsRepository {
 			)
 			.where(eq(questionsTable.authorId, authorId))
 			.orderBy(questionsTable.id)
-			.orderBy(answerTable.id)
 			.limit(pageSize || 10)
 			.offset(page ? (page - 1) * (pageSize || 10) : 0);
 

@@ -7,6 +7,7 @@ import { BookInProgressModule } from './bookinprogress/bookinprogress.module';
 import { ReviewModule } from './book/reviews/reviews.module';
 import { CommentsModule } from './bookinprogress/comments/comments.module';
 import { QuestionsModule } from './questions/questions.module';
+import { NewsModule } from './news/news.module';
 
 @Module({
 	imports: [
@@ -17,6 +18,7 @@ import { QuestionsModule } from './questions/questions.module';
 		ReviewModule,
 		CommentsModule,
 		QuestionsModule,
+		NewsModule,
 	],
 	controllers: [BasicController],
 	providers: [],

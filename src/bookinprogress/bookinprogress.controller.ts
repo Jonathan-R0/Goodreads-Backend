@@ -21,9 +21,9 @@ import {
 	BookInProgressAndAuthor,
 } from './bookinprogress.entity';
 
-@ApiTags('BooksInProgress')
+@ApiTags('Books In Progress')
 @Controller('bookinprogress')
-export class BookinprogressController {
+export class BookInProgressController {
 	constructor(
 		private readonly bookInProgressService: BookInProgressService,
 	) {}

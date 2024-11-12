@@ -29,6 +29,13 @@ export class NewsController {
 		private readonly followService: FollowService,
 	) {}
 
+	@Get('/:id')
+	@ApiOperation({ summary: 'Get News by ID' })
+	@ApiResponse({ status: 200, description: 'Returns a news object.' })
+	async findOne(@Param('id') id: number): Promise<StandardResponse<News>> {
+		return success(await this.newsService.findById(Number(id)));
+	}
+
 	@Post('/')
 	@ApiOperation({ summary: 'Create News' })
 	@ApiResponse({ status: 201, description: 'Creates a news object.' })

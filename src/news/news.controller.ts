@@ -29,7 +29,7 @@ export class NewsController {
 		private readonly followService: FollowService,
 	) {}
 
-	@Get('/:id')
+	@Get('/id/:id')
 	@ApiOperation({ summary: 'Get News by ID' })
 	@ApiResponse({ status: 200, description: 'Returns a news object.' })
 	async findOne(@Param('id') id: number): Promise<StandardResponse<News>> {

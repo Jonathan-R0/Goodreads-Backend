@@ -13,11 +13,16 @@ import { QuestionAndUser } from './questions.entity';
 import { PagedResult, StandardResponse, success } from '@/util/utils';
 import { AuthGuard } from '@/auth/auth.guard';
 import { CreateQuestionsDto } from './dto/create-questions.dto';
+import { AnswersService } from './answer/answer.service';
+import { AnswerQuestionsDto } from './dto/answer-questions.dto';
 
 @ApiTags('Questions')
 @Controller('questions')
 export class QuestionsController {
-	constructor(private readonly QuestionsService: QuestionsService) {}
+	constructor(
+		private readonly QuestionsService: QuestionsService,
+		private readonly answersService: AnswersService,
+	) {}
 
 	@Post('/:authorId')
 	@ApiOperation({ summary: 'Create Question' })
@@ -45,5 +50,16 @@ export class QuestionsController {
 			parseInt(pageSize),
 		);
 		return success(questions);
+	}
+
+	@Post('/:questionId/answer')
+	@ApiOperation({ summary: 'Answer Question' })
+	@ApiResponse({ status: 201, description: 'Creates an answer object.' })
+	public async answerQuestion(
+		@Param('questionId') questionId: number,
+		@Body() answerDto: AnswerQuestionsDto,
+	): Promise<StandardResponse<void>> {
+		await this.answersService.create(questionId, answerDto.answer);
+		return success();
 	}
 }

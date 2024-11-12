@@ -49,6 +49,7 @@ export class NewsController {
 			await this.newsService.create({
 				...createNewsDto,
 				author_id: user.id,
+				created_at: new Date(),
 			}),
 		);
 	}

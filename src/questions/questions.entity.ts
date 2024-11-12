@@ -1,6 +1,7 @@
 import { pgTable, serial, integer, text, timestamp } from 'drizzle-orm/pg-core';
 import usersTable, { User } from '@/user/user.entity';
 import { InferSelectModel } from 'drizzle-orm';
+import { Answer } from './answer/answer.entity';
 
 export const questionsTable = pgTable('question', {
 	id: serial('id').primaryKey(),
@@ -20,5 +21,5 @@ export type Question = InferSelectModel<typeof questionsTable>;
 
 export type QuestionAndUser = {
 	user: Omit<User, 'password'>;
-	question: Question;
+	question: Question & { answers: Answer[] };
 };

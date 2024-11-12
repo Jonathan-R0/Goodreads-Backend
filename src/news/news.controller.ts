@@ -13,7 +13,7 @@ import {
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { NewsService } from './news.service';
 import { AuthGuard } from '@/auth/auth.guard';
-import { News } from './news.entity';
+import { News, NewsAndAuthor } from './news.entity';
 import { CreateNewsDto } from './dto/create-news.dto';
 import { UpdateNewsDto } from './dto/update-news.dto';
 import { UserService } from '@/user/user.service';
@@ -32,8 +32,10 @@ export class NewsController {
 	@Get('/id/:id')
 	@ApiOperation({ summary: 'Get News by ID' })
 	@ApiResponse({ status: 200, description: 'Returns a news object.' })
-	async findOne(@Param('id') id: number): Promise<StandardResponse<News>> {
-		return success(await this.newsService.findById(Number(id)));
+	async findOne(
+		@Param('id') id: number,
+	): Promise<StandardResponse<NewsAndAuthor>> {
+		return success(await this.newsService.findByIdAndAuthor(Number(id)));
 	}
 
 	@Post('/')
@@ -91,7 +93,7 @@ export class NewsController {
 		@Req() req: Request & { user: Record<string, any> },
 		@Query('page') page: number = 1,
 		@Query('pageSize') pageSize: number = 10,
-	): Promise<StandardResponse<PagedResult<News[]>>> {
+	): Promise<StandardResponse<PagedResult<NewsAndAuthor[]>>> {
 		const user = await this.userService.getUserByEmail(req.user.sub);
 		const following = await this.followService.getFollowing(user.id);
 		return success(

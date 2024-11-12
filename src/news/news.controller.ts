@@ -93,6 +93,12 @@ export class NewsController {
 	): Promise<StandardResponse<PagedResult<News[]>>> {
 		const user = await this.userService.getUserByEmail(req.user.sub);
 		const following = await this.followService.getFollowing(user.id);
-		return success(await this.newsService.list(following, page, pageSize));
+		return success(
+			await this.newsService.list(
+				following,
+				Number(page),
+				Number(pageSize),
+			),
+		);
 	}
 }

@@ -1,6 +1,6 @@
 import { BaseService } from '@/util/base.service';
 import { Injectable } from '@nestjs/common';
-import newsTable, { News } from './news.entity';
+import newsTable, { NewsAndAuthor } from './news.entity';
 import { NewsRepository } from './news.repository';
 import { User } from '@/user/user.entity';
 import { PagedResult } from '@/util/utils';
@@ -16,11 +16,15 @@ export class NewsService extends BaseService<typeof newsTable, NewsRepository> {
 		following: User[],
 		page: number,
 		pageSize: number,
-	): Promise<PagedResult<News[]>> {
-		return await this.newsRepository.findAllWhere(
+	): Promise<PagedResult<NewsAndAuthor[]>> {
+		return await this.newsRepository.findAllNewsAndAuthorsWhere(
 			[or(...following.map((user) => eq(newsTable.author_id, user.id)))],
 			page,
 			pageSize,
 		);
+	}
+
+	public async findByIdAndAuthor(id: number): Promise<NewsAndAuthor> {
+		return await this.newsRepository.findByIdAndAuthor(id);
 	}
 }

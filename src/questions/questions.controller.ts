@@ -55,6 +55,7 @@ export class QuestionsController {
 	@Post('/:questionId/answer')
 	@ApiOperation({ summary: 'Answer Question' })
 	@ApiResponse({ status: 201, description: 'Creates an answer object.' })
+	@UseGuards(AuthGuard)
 	public async answerQuestion(
 		@Param('questionId') questionId: number,
 		@Body() answerDto: AnswerQuestionsDto,

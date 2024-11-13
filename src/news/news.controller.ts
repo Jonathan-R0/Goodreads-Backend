@@ -104,4 +104,23 @@ export class NewsController {
 			),
 		);
 	}
+
+	@Get('/:authorId')
+	@ApiOperation({ summary: 'Get Author News' })
+	@ApiResponse({
+		status: 200,
+		description: 'Returns a list of author news.',
+	})
+	@UseGuards(AuthGuard)
+	@ApiPaged()
+	async findPagedAuthorNews(
+		@Param('authorId') authorId: number,
+		@Query('page') page: number = 1,
+		@Query('pageSize') pageSize: number = 10,
+	): Promise<StandardResponse<PagedResult<NewsAndAuthor[]>>> {
+		const user = await this.userService.findById(authorId);
+		return success(
+			await this.newsService.list([user], Number(page), Number(pageSize)),
+		);
+	}
 }

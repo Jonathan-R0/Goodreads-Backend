@@ -15,6 +15,18 @@ export class NewsRepository extends BaseRepository<typeof newsTable> {
 		page?: number,
 		pageSize?: number,
 	): Promise<PagedResult<NewsAndAuthor[]>> {
+		if (
+			andsConditions.length === 0 ||
+			andsConditions.every((cond) => cond === undefined)
+		) {
+			return {
+				data: [],
+				total: 0,
+				page: page || 0,
+				pageSize: pageSize || 0,
+			};
+		}
+
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { password, ...rest } = getTableColumns(usersTable);
 		const partialResp = db

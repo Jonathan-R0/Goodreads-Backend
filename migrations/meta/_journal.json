@@ -1,104 +1,104 @@
 {
-  "version": "7",
-  "dialect": "postgresql",
-  "entries": [
-    {
-      "idx": 0,
-      "version": "7",
-      "when": 1728790782971,
-      "tag": "0000_smooth_rumiko_fujikawa",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1729450346382,
-      "tag": "0001_common_boom_boom",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1729457772946,
-      "tag": "0002_romantic_pyro",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1729619914119,
-      "tag": "0003_known_wallop",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1729690135354,
-      "tag": "0004_breezy_wolfsbane",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1730065835615,
-      "tag": "0005_fresh_zemo",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1730406524068,
-      "tag": "0006_sudden_princess_powerful",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "7",
-      "when": 1730909570407,
-      "tag": "0007_sharp_hellfire_club",
-      "breakpoints": true
-    },
-    {
-      "idx": 8,
-      "version": "7",
-      "when": 1730909910322,
-      "tag": "0008_free_viper",
-      "breakpoints": true
-    },
-    {
-      "idx": 9,
-      "version": "7",
-      "when": 1731196000466,
-      "tag": "0009_curved_doorman",
-      "breakpoints": true
-    },
-    {
-      "idx": 10,
-      "version": "7",
-      "when": 1731370064537,
-      "tag": "0010_overjoyed_moira_mactaggert",
-      "breakpoints": true
-    },
-    {
-      "idx": 11,
-      "version": "7",
-      "when": 1731441695832,
-      "tag": "0011_careless_thena",
-      "breakpoints": true
-    },
-    {
-      "idx": 12,
-      "version": "7",
-      "when": 1731442438355,
-      "tag": "0012_pale_union_jack",
-      "breakpoints": true
-    },
-    {
-      "idx": 13,
-      "version": "7",
-      "when": 1731446927357,
-      "tag": "0013_tired_exodus",
-      "breakpoints": true
-    }
-  ]
+	"version": "7",
+	"dialect": "postgresql",
+	"entries": [
+		{
+			"idx": 0,
+			"version": "7",
+			"when": 1728790782971,
+			"tag": "0000_smooth_rumiko_fujikawa",
+			"breakpoints": true
+		},
+		{
+			"idx": 1,
+			"version": "7",
+			"when": 1729450346382,
+			"tag": "0001_common_boom_boom",
+			"breakpoints": true
+		},
+		{
+			"idx": 2,
+			"version": "7",
+			"when": 1729457772946,
+			"tag": "0002_romantic_pyro",
+			"breakpoints": true
+		},
+		{
+			"idx": 3,
+			"version": "7",
+			"when": 1729619914119,
+			"tag": "0003_known_wallop",
+			"breakpoints": true
+		},
+		{
+			"idx": 4,
+			"version": "7",
+			"when": 1729690135354,
+			"tag": "0004_breezy_wolfsbane",
+			"breakpoints": true
+		},
+		{
+			"idx": 5,
+			"version": "7",
+			"when": 1730065835615,
+			"tag": "0005_fresh_zemo",
+			"breakpoints": true
+		},
+		{
+			"idx": 6,
+			"version": "7",
+			"when": 1730406524068,
+			"tag": "0006_sudden_princess_powerful",
+			"breakpoints": true
+		},
+		{
+			"idx": 7,
+			"version": "7",
+			"when": 1730909570407,
+			"tag": "0007_sharp_hellfire_club",
+			"breakpoints": true
+		},
+		{
+			"idx": 8,
+			"version": "7",
+			"when": 1730909910322,
+			"tag": "0008_free_viper",
+			"breakpoints": true
+		},
+		{
+			"idx": 9,
+			"version": "7",
+			"when": 1731196000466,
+			"tag": "0009_curved_doorman",
+			"breakpoints": true
+		},
+		{
+			"idx": 10,
+			"version": "7",
+			"when": 1731370064537,
+			"tag": "0010_overjoyed_moira_mactaggert",
+			"breakpoints": true
+		},
+		{
+			"idx": 11,
+			"version": "7",
+			"when": 1731441695832,
+			"tag": "0011_careless_thena",
+			"breakpoints": true
+		},
+		{
+			"idx": 12,
+			"version": "7",
+			"when": 1731442438355,
+			"tag": "0012_pale_union_jack",
+			"breakpoints": true
+		},
+		{
+			"idx": 13,
+			"version": "7",
+			"when": 1731446927357,
+			"tag": "0013_tired_exodus",
+			"breakpoints": true
+		}
+	]
 }

@@ -22,5 +22,5 @@ export type Question = InferSelectModel<typeof questionsTable>;
 export type QuestionAndUser = {
 	user: Omit<User, 'password'>;
 	question: Question;
-	answers: Answer[]
- };
+	answers: Answer[];
+};

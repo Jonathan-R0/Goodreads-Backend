@@ -5,7 +5,9 @@ import { InferSelectModel } from 'drizzle-orm';
 export const answerTable = pgTable('answer', {
 	id: serial('id').primaryKey(),
 	text: text('text'),
-	questionId: integer('questionId').references(() => questionsTable.id),
+	questionId: integer('questionId').references(() => questionsTable.id, {
+		onDelete: 'cascade',
+	}),
 	created_at: timestamp('created_at').defaultNow(),
 });
 

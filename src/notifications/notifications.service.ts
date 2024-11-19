@@ -7,6 +7,9 @@ import { FollowRepository } from '@/user/follows/follow.repository';
 
 @Injectable()
 export class NotificationService {
+	static createNewAnswrNotification(userId: number, authorId: number) {
+		throw new Error('Method not implemented.');
+	}
 	constructor(
 		private readonly notificationRepository: NotificationRepository,
 		private readonly bookService: BookService,
@@ -22,6 +25,28 @@ export class NotificationService {
 			user_id: book.author_id,
 			reference_id: review_id,
 			type: 'NEW_REVIEW',
+		});
+	}
+
+	public async createNewQuestionNotification(
+		author_id: number, // role: "author"
+		user_id: number, // author of the question
+	): Promise<void> {
+		await this.notificationRepository.create({
+			user_id: author_id,
+			reference_id: user_id,
+			type: 'NEW_QUESTION',
+		});
+	}
+
+	public async createNewAnswerNotification(
+		userId: number, // author of the question
+		authorId: number, // role: "author"
+	): Promise<void> {
+		await this.notificationRepository.create({
+			user_id: userId,
+			reference_id: authorId,
+			type: 'NEW_ANSWER',
 		});
 	}
 

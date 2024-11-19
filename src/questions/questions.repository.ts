@@ -1,19 +1,46 @@
 import db from '@/config/db.config';
-import { QuestionAndUser, questionsTable } from './questions.entity';
+import { Question, QuestionAndUser, questionsTable } from './questions.entity';
 import { desc, eq, inArray } from 'drizzle-orm/expressions';
 import { CreateQuestionsDto } from './dto/create-questions.dto';
 import { count, getTableColumns } from 'drizzle-orm';
 import usersTable from '@/user/user.entity';
 import { PagedResult } from '@/util/utils';
 import answerTable from './answer/answer.entity';
+import { NotificationService } from '@/notifications/notifications.service';
 
 export class QuestionsRepository {
+	constructor(private notificationService: NotificationService) {
+		this.notificationService = notificationService;
+	}
+
 	async create(authorId: number, questionDto: CreateQuestionsDto) {
 		await db.insert(questionsTable).values({
 			authorId,
 			userId: questionDto.userId,
 			content: questionDto.content,
 		});
+
+		await this.createQuestionNotification(authorId, questionDto.userId);
+	}
+
+	async createQuestionNotification(
+		author_id: number,
+		user_id: number,
+	): Promise<void> {
+		await this.notificationService.createNewQuestionNotification(
+			author_id,
+			user_id,
+		);
+	}
+
+	public async getQuestionsByQuestionId(
+		question_id: number,
+	): Promise<Question> {
+		const result = await db
+			.select()
+			.from(questionsTable)
+			.where(eq(questionsTable.id, question_id));
+		return result[0];
 	}
 
 	public async getQuestionsAndUsers(

@@ -20,6 +20,6 @@ dotenv.config();
 		RecommendedService,
 		RecommendedRepository,
 	],
-	exports: [UserService],
+	exports: [UserService, FollowRepository],
 })
 export class UserModule {}

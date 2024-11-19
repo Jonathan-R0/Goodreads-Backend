@@ -3,12 +3,14 @@ import { NotificationRepository } from './notifications.repository';
 import { BookService } from '@/book/book.service';
 import { NotificationsResponse } from './notifications.entity';
 import { UpdateNotificationDto } from './dto/update-notification.dto';
+import { FollowRepository } from '@/user/follows/follow.repository';
 
 @Injectable()
 export class NotificationService {
 	constructor(
 		private readonly notificationRepository: NotificationRepository,
 		private readonly bookService: BookService,
+		private readonly followRepository: FollowRepository,
 	) {}
 
 	public async createNewReviewNotification(
@@ -21,6 +23,24 @@ export class NotificationService {
 			reference_id: review_id,
 			type: 'NEW_REVIEW',
 		});
+	}
+
+	public async createNewNewsNotification(
+		news_id: number,
+		author_id: number,
+	): Promise<void> {
+		const followers = this.followRepository.findFollowers(author_id);
+		Promise.all([
+			followers.then((followers) => {
+				followers.map((follower) => {
+					this.notificationRepository.create({
+						user_id: follower.id,
+						reference_id: news_id,
+						type: 'NEW_NEWS',
+					});
+				});
+			}),
+		]);
 	}
 
 	public async findByUserId(id: number): Promise<NotificationsResponse> {

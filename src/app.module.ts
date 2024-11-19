@@ -8,6 +8,7 @@ import { ReviewModule } from './book/reviews/reviews.module';
 import { CommentsModule } from './bookinprogress/comments/comments.module';
 import { QuestionsModule } from './questions/questions.module';
 import { NewsModule } from './news/news.module';
+import { NotificationModule } from './notifications/notifications.module';
 
 @Module({
 	imports: [
@@ -19,6 +20,7 @@ import { NewsModule } from './news/news.module';
 		CommentsModule,
 		QuestionsModule,
 		NewsModule,
+		NotificationModule,
 	],
 	controllers: [BasicController],
 	providers: [],

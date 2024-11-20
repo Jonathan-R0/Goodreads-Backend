@@ -12,8 +12,9 @@ export class AnswersService {
 		question: Question,
 	): Promise<void> {
 		const authorId = question.authorId;
+
 		const userId = question.userId;
-		this.answersRepository.createAnswerNotification(userId, authorId);
+		this.answersRepository.createAnswerNotification(authorId, userId);
 		return this.answersRepository.create(questionId, answer);
 	}
 }

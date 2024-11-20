@@ -7,9 +7,6 @@ import { FollowRepository } from '@/user/follows/follow.repository';
 
 @Injectable()
 export class NotificationService {
-	static createNewAnswrNotification(userId: number, authorId: number) {
-		throw new Error('Method not implemented.');
-	}
 	constructor(
 		private readonly notificationRepository: NotificationRepository,
 		private readonly bookService: BookService,
@@ -26,6 +23,26 @@ export class NotificationService {
 			reference_id: review_id,
 			type: 'NEW_REVIEW',
 		});
+	}
+
+	public async updateBookInProgressNotification(
+		book_id: number, // Book in progress id
+		author_id: number, // Author of book in progress
+	): Promise<void> {
+		const followers = this.followRepository.findFollowers(author_id);
+		Promise.all([
+			followers.then((followers) => {
+				console.log(`followers del author ${author_id}`, followers);
+
+				followers.map((follower) => {
+					this.notificationRepository.create({
+						user_id: follower.id,
+						reference_id: book_id,
+						type: 'UPDATE_BOOK_IN_PROGRESS',
+					});
+				});
+			}),
+		]);
 	}
 
 	public async createNewQuestionNotification(

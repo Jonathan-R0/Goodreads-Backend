@@ -20,12 +20,14 @@ import {
 	BookInProgress,
 	BookInProgressAndAuthor,
 } from './bookinprogress.entity';
+import { NotificationService } from '@/notifications/notifications.service';
 
 @ApiTags('Books In Progress')
 @Controller('bookinprogress')
 export class BookInProgressController {
 	constructor(
 		private readonly bookInProgressService: BookInProgressService,
+		private readonly notificationService: NotificationService,
 	) {}
 
 	@Post()
@@ -92,6 +94,14 @@ export class BookInProgressController {
 			id,
 			...updateBookInProgressDto,
 		});
+		console.log('hola');
+
+		if (updatedBook && updatedBook.author_id) {
+			await this.notificationService.updateBookInProgressNotification(
+				id,
+				updatedBook.author_id,
+			);
+		}
 		return success(updatedBook);
 	}
 

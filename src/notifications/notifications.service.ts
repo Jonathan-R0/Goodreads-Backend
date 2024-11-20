@@ -45,8 +45,8 @@ export class NotificationService {
 		user_id: number, // author of the question
 	): Promise<void> {
 		await this.notificationRepository.create({
-			user_id: author_id,
-			reference_id: user_id,
+			user_id: user_id,
+			reference_id: author_id,
 			type: 'NEW_QUESTION',
 		});
 	}

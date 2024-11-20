@@ -14,11 +14,8 @@ export class ReviewsService {
 		bookId: number,
 		reviewDto: CreateReviewsDto,
 	): Promise<void> {
-		const response = await this.reviewsRepo.create(bookId, reviewDto);
-		await this.notificationService.createNewReviewNotification(
-			response.id,
-			response.bookId,
-		);
+		await this.reviewsRepo.create(bookId, reviewDto);
+		await this.notificationService.createNewReviewNotification(bookId);
 	}
 
 	async getReviewsForBook(

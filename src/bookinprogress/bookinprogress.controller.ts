@@ -94,7 +94,6 @@ export class BookInProgressController {
 			id,
 			...updateBookInProgressDto,
 		});
-		console.log('hola');
 
 		if (updatedBook && updatedBook.author_id) {
 			await this.notificationService.updateBookInProgressNotification(

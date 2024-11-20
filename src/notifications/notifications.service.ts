@@ -13,14 +13,11 @@ export class NotificationService {
 		private readonly followRepository: FollowRepository,
 	) {}
 
-	public async createNewReviewNotification(
-		review_id: number,
-		book_id: number,
-	): Promise<void> {
+	public async createNewReviewNotification(book_id: number): Promise<void> {
 		const book = await this.bookService.findById(book_id);
 		await this.notificationRepository.create({
 			user_id: book.author_id,
-			reference_id: review_id,
+			reference_id: book_id,
 			type: 'NEW_REVIEW',
 		});
 	}
@@ -32,8 +29,6 @@ export class NotificationService {
 		const followers = this.followRepository.findFollowers(author_id);
 		Promise.all([
 			followers.then((followers) => {
-				console.log(`followers del author ${author_id}`, followers);
-
 				followers.map((follower) => {
 					this.notificationRepository.create({
 						user_id: follower.id,

@@ -6,10 +6,11 @@ import { NewsService } from './news.service';
 import { UserModule } from '@/user/user.module';
 import { FollowService } from '@/user/follows/follow.service';
 import { FollowRepository } from '@/user/follows/follow.repository';
+import { NotificationModule } from '@/notifications/notifications.module';
 dotenv.config();
 
 @Module({
-	imports: [UserModule],
+	imports: [UserModule, NotificationModule],
 	controllers: [NewsController],
 	providers: [NewsService, NewsRepository, FollowService, FollowRepository],
 	exports: [NewsService],

@@ -1,5 +1,5 @@
 import db from '@/config/db.config';
-import { QuestionAndUser, questionsTable } from './questions.entity';
+import { Question, QuestionAndUser, questionsTable } from './questions.entity';
 import { desc, eq, inArray } from 'drizzle-orm/expressions';
 import { CreateQuestionsDto } from './dto/create-questions.dto';
 import { count, getTableColumns } from 'drizzle-orm';
@@ -8,12 +8,24 @@ import { PagedResult } from '@/util/utils';
 import answerTable from './answer/answer.entity';
 
 export class QuestionsRepository {
+	constructor() {}
+
 	async create(authorId: number, questionDto: CreateQuestionsDto) {
 		await db.insert(questionsTable).values({
 			authorId,
 			userId: questionDto.userId,
 			content: questionDto.content,
 		});
+	}
+
+	public async getQuestionsByQuestionId(
+		question_id: number,
+	): Promise<Question> {
+		const result = await db
+			.select()
+			.from(questionsTable)
+			.where(eq(questionsTable.id, question_id));
+		return result[0];
 	}
 
 	public async getQuestionsAndUsers(

@@ -48,11 +48,7 @@ export class NewsController {
 	): Promise<StandardResponse<News>> {
 		const user = await this.userService.getUserByEmail(req.user.sub);
 		return success(
-			await this.newsService.create({
-				...createNewsDto,
-				author_id: user.id,
-				created_at: new Date(),
-			}),
+			await this.newsService.createNews(createNewsDto, user.id),
 		);
 	}
 

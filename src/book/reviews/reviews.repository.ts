@@ -6,13 +6,17 @@ import { PagedResult } from '@/util/utils';
 import { count, desc } from 'drizzle-orm';
 
 export class ReviewsRepository {
-	async create(bookId: number, reviewDto: CreateReviewsDto) {
-		await db.insert(reviewsTable).values({
-			bookId,
-			userId: reviewDto.userId,
-			content: reviewDto.content,
-			rating: reviewDto.rating,
-		});
+	async create(bookId: number, reviewDto: CreateReviewsDto): Promise<Review> {
+		const response = await db
+			.insert(reviewsTable)
+			.values({
+				bookId,
+				userId: reviewDto.userId,
+				content: reviewDto.content,
+				rating: reviewDto.rating,
+			})
+			.returning();
+		return response[0];
 	}
 
 	async findByBookId(

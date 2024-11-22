@@ -2,8 +2,12 @@ import { ReviewsRepository } from './reviews.repository';
 import { Review } from './reviews.entity';
 import { CreateReviewsDto } from '../dto/create-reviews.dto';
 import { PagedResult } from '@/util/utils';
+import { NotificationService } from '../../notifications/notifications.service';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class ReviewsService {
+	constructor(private readonly notificationService: NotificationService) {}
 	private reviewsRepo = new ReviewsRepository();
 
 	async createReview(
@@ -11,6 +15,7 @@ export class ReviewsService {
 		reviewDto: CreateReviewsDto,
 	): Promise<void> {
 		await this.reviewsRepo.create(bookId, reviewDto);
+		await this.notificationService.createNewReviewNotification(bookId);
 	}
 
 	async getReviewsForBook(

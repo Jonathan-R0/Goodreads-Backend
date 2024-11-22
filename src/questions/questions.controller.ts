@@ -60,7 +60,13 @@ export class QuestionsController {
 		@Param('questionId') questionId: number,
 		@Body() answerDto: AnswerQuestionsDto,
 	): Promise<StandardResponse<void>> {
-		await this.answersService.create(questionId, answerDto.answer);
+		const question =
+			await this.QuestionsService.getQuestionsByQuestionId(questionId);
+		await this.answersService.create(
+			questionId,
+			answerDto.answer,
+			question,
+		);
 		return success();
 	}
 }

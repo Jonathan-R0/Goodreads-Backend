@@ -57,12 +57,26 @@ export class BookController {
 		type: String,
 		description: 'Filter by book description',
 	})
+	@ApiQuery({
+		name: 'filterGenre',
+		required: false,
+		type: String,
+		description: 'Filter by book genre',
+	})
+	@ApiQuery({
+		name: 'filterAuthor',
+		required: false,
+		type: String,
+		description: 'Filter by book author',
+	})
 	@UseGuards(AuthGuard)
 	async listBooks(
 		@Query('page') page?: number,
 		@Query('pageSize') pageSize?: number,
 		@Query('filterTitle') filterTitle?: string,
 		@Query('filterDescription') filterDescription?: string,
+		@Query('filterGenre') filterGenre?: string,
+		@Query('filterAuthor') filterAuthor?: string,
 	): Promise<StandardResponse<PagedResult<BookAndAuthor[]>>> {
 		return success(
 			await this.bookService.list(
@@ -70,6 +84,8 @@ export class BookController {
 				parseInt(String(pageSize ?? 15), 10),
 				filterTitle,
 				filterDescription,
+				filterGenre,
+				filterAuthor,
 			),
 		);
 	}

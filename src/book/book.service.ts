@@ -18,12 +18,16 @@ export class BookService extends BaseService<
 		pageSize?: number,
 		filterName: string = '',
 		filterDescription: string = '',
+		filterGenre: string = '',
+		filterAuthor: string = '',
 	) {
 		return await this.bookRepository.findAllBooksAndAuthorsWhere(
 			[
 				and(
 					like(booksTable.title, `%${filterName}%`),
 					like(booksTable.description, `%${filterDescription}%`),
+					like(booksTable.genre, `%${filterGenre}%`),
+					like(booksTable.publisher, `%${filterAuthor}%`),
 				),
 			],
 			page,

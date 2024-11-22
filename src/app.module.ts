@@ -9,6 +9,7 @@ import { CommentsModule } from './bookinprogress/comments/comments.module';
 import { QuestionsModule } from './questions/questions.module';
 import { NewsModule } from './news/news.module';
 import { NotificationModule } from './notifications/notifications.module';
+import { ReadingsModule } from './readings/readings.module';
 
 @Module({
 	imports: [
@@ -21,6 +22,7 @@ import { NotificationModule } from './notifications/notifications.module';
 		QuestionsModule,
 		NewsModule,
 		NotificationModule,
+		ReadingsModule,
 	],
 	controllers: [BasicController],
 	providers: [],

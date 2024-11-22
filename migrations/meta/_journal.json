@@ -113,6 +113,20 @@
       "when": 1731962530186,
       "tag": "0015_plain_lilandra",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1732253132308,
+      "tag": "0016_natural_proudstar",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1732270432725,
+      "tag": "0017_thick_moonstone",
+      "breakpoints": true
     }
   ]
 }

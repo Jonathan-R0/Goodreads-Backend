@@ -47,6 +47,7 @@ export class BookRepository extends BaseRepository<typeof booksTable> {
 		const totalResp = await db
 			.select({ count: count() })
 			.from(this.table)
+			.innerJoin(usersTable, eq(booksTable.author_id, usersTable.id))
 			.where(
 				and(
 					like(booksTable.title, `%${filterName}%`),

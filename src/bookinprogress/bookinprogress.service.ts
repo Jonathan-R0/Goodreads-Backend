@@ -19,12 +19,17 @@ export class BookInProgressService extends BaseService<
 	}
 
 	public async createBookInProgress(bookInProgress: UpdateBookInProgressDto) {
+		const response =
+			await this.bookInProgressRepository.create(bookInProgress);
+
 		await this.bookInProgressUpdateRepository.create({
 			author_id: bookInProgress.author_id,
 			book_excerpt: bookInProgress.book_excerpt,
 			progress_percentage: bookInProgress.progress_percentage,
+			book_in_progress_id: response.id,
 		});
-		return await this.bookInProgressRepository.create(bookInProgress);
+
+		return response;
 	}
 
 	public async updateBookInProgress(
@@ -51,6 +56,7 @@ export class BookInProgressService extends BaseService<
 			await this.bookInProgressUpdateRepository.create({
 				author_id: bookInProgressToUpdate.author_id,
 				book_excerpt: bookInProgress.book_excerpt,
+				book_in_progress_id: id,
 			});
 		}
 		if (
@@ -61,6 +67,7 @@ export class BookInProgressService extends BaseService<
 			await this.bookInProgressUpdateRepository.create({
 				author_id: bookInProgressToUpdate.author_id,
 				progress_percentage: bookInProgress.progress_percentage,
+				book_in_progress_id: id,
 			});
 		}
 	}

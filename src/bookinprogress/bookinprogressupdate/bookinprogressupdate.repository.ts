@@ -1,9 +1,10 @@
 import { BaseRepository } from '@/util/base.repository';
 import { Injectable } from '@nestjs/common';
 import bookInProgressUpdateTable from './bookinprogressupdate.entity';
-import { User } from '@/user/user.entity';
+import usersTable, { User } from '@/user/user.entity';
 import db from '@/config/db.config';
 import { and, or, eq, isNotNull, desc, count } from 'drizzle-orm';
+import bookInProgressTable from '../bookinprogress.entity';
 
 @Injectable()
 export class BookInProgressUpdateRepository extends BaseRepository<
@@ -24,6 +25,17 @@ export class BookInProgressUpdateRepository extends BaseRepository<
 				and(
 					or(...authorConditions),
 					isNotNull(bookInProgressUpdateTable.book_excerpt),
+				),
+			)
+			.innerJoin(
+				usersTable,
+				eq(usersTable.id, bookInProgressUpdateTable.author_id),
+			)
+			.innerJoin(
+				bookInProgressTable,
+				eq(
+					bookInProgressTable.id,
+					bookInProgressUpdateTable.book_in_progress_id,
 				),
 			)
 			.orderBy(desc(bookInProgressUpdateTable.created_at));
@@ -62,6 +74,17 @@ export class BookInProgressUpdateRepository extends BaseRepository<
 				and(
 					or(...authorConditions),
 					isNotNull(bookInProgressUpdateTable.progress_percentage),
+				),
+			)
+			.innerJoin(
+				usersTable,
+				eq(usersTable.id, bookInProgressUpdateTable.author_id),
+			)
+			.innerJoin(
+				bookInProgressTable,
+				eq(
+					bookInProgressTable.id,
+					bookInProgressUpdateTable.book_in_progress_id,
 				),
 			)
 			.orderBy(desc(bookInProgressUpdateTable.created_at));

@@ -25,6 +25,7 @@ import { NotificationService } from '@/notifications/notifications.service';
 import { UserService } from '@/user/user.service';
 import { FollowService } from '@/user/follows/follow.service';
 import { BookInProgressUpdateService } from './bookinprogressupdate/bookinprogressupdate.service';
+import { BookInProgressUpdateAndAuthor } from './bookinprogressupdate/bookinprogressupdate.entity';
 
 @ApiTags('Books In Progress')
 @Controller('bookinprogress')

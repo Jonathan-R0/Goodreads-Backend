@@ -9,18 +9,22 @@ import {
 	UseGuards,
 	Put,
 	Patch,
+	Req,
 } from '@nestjs/common';
 import { BookInProgressService } from './bookinprogress.service';
 import { CreateBookInProgressDto } from './dto/create-bookinprogress.dto';
 import { UpdateBookInProgressDto } from './dto/update-bookinprogress.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@/auth/auth.guard';
-import { PagedResult, StandardResponse, success } from '@/util/utils';
+import { ApiPaged, PagedResult, StandardResponse, success } from '@/util/utils';
 import {
 	BookInProgress,
 	BookInProgressAndAuthor,
 } from './bookinprogress.entity';
 import { NotificationService } from '@/notifications/notifications.service';
+import { UserService } from '@/user/user.service';
+import { FollowService } from '@/user/follows/follow.service';
+import { BookInProgressUpdateService } from './bookinprogressupdate/bookinprogressupdate.service';
 
 @ApiTags('Books In Progress')
 @Controller('bookinprogress')
@@ -28,6 +32,9 @@ export class BookInProgressController {
 	constructor(
 		private readonly bookInProgressService: BookInProgressService,
 		private readonly notificationService: NotificationService,
+		private readonly userService: UserService,
+		private readonly followService: FollowService,
+		private readonly bookInProgressUpdateService: BookInProgressUpdateService,
 	) {}
 
 	@Post()
@@ -37,7 +44,7 @@ export class BookInProgressController {
 	async create(
 		@Body() createBookInProgressDto: CreateBookInProgressDto,
 	): Promise<StandardResponse<BookInProgress>> {
-		const book = await this.bookInProgressService.create(
+		const book = await this.bookInProgressService.createBookInProgress(
 			createBookInProgressDto,
 		);
 		return success(book);
@@ -90,10 +97,11 @@ export class BookInProgressController {
 		@Param('id') id: number,
 		@Body() updateBookInProgressDto: UpdateBookInProgressDto,
 	): Promise<StandardResponse<BookInProgress>> {
-		const updatedBook = await this.bookInProgressService.update({
-			id,
-			...updateBookInProgressDto,
-		});
+		const updatedBook =
+			await this.bookInProgressService.updateBookInProgress(
+				id,
+				updateBookInProgressDto,
+			);
 
 		if (updatedBook && updatedBook.author_id) {
 			await this.notificationService.updateBookInProgressNotification(
@@ -133,5 +141,56 @@ export class BookInProgressController {
 		const deleteBookInProgress =
 			await this.bookInProgressService.delete(id);
 		return success(deleteBookInProgress);
+	}
+
+	@Get('/subscribed/progress')
+	@ApiOperation({ summary: 'Find progress for books by authors followed' })
+	@ApiResponse({
+		status: 200,
+		description: 'Returns a book in progress with author details.',
+	})
+	@ApiResponse({ status: 404, description: 'Book not found.' })
+	@UseGuards(AuthGuard)
+	@ApiPaged()
+	async getProgressForSubscriber(
+		@Req() req: Request & { user: Record<string, any> },
+		@Query('page') page: number = 1,
+		@Query('pageSize') pageSize: number = 10,
+	): Promise<StandardResponse<PagedResult<any[]>>> {
+		const user = await this.userService.getUserByEmail(req.user.sub);
+		const following = await this.followService.getFollowing(user.id);
+
+		return success(
+			await this.bookInProgressUpdateService.listProgress(
+				following,
+				Number(page),
+				Number(pageSize),
+			),
+		);
+	}
+
+	@Get('/subscribed/excerpt')
+	@ApiOperation({ summary: 'Find excerpts for books by authors followed' })
+	@ApiResponse({
+		status: 200,
+		description: 'Returns a book in progress with author details.',
+	})
+	@UseGuards(AuthGuard)
+	@ApiPaged()
+	async getExcerptsForSubscriber(
+		@Req() req: Request & { user: Record<string, any> },
+		@Query('page') page: number = 1,
+		@Query('pageSize') pageSize: number = 10,
+	): Promise<StandardResponse<PagedResult<any[]>>> {
+		const user = await this.userService.getUserByEmail(req.user.sub);
+		const following = await this.followService.getFollowing(user.id);
+
+		return success(
+			await this.bookInProgressUpdateService.listExcerpt(
+				following,
+				Number(page),
+				Number(pageSize),
+			),
+		);
 	}
 }

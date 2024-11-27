@@ -1,0 +1,1 @@
+ALTER TABLE "booksinprogressupdate" ADD COLUMN "progress_percentage" integer;

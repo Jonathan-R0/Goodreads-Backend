@@ -1,0 +1,1 @@
+ALTER TABLE "booksinprogressupdate" ADD COLUMN "created_at" timestamp DEFAULT now();

@@ -10,6 +10,7 @@ import { QuestionsModule } from './questions/questions.module';
 import { NewsModule } from './news/news.module';
 import { NotificationModule } from './notifications/notifications.module';
 import { ReadingsModule } from './readings/readings.module';
+import { QuotesModule } from './quotes/quotes.module';
 
 @Module({
 	imports: [
@@ -23,6 +24,7 @@ import { ReadingsModule } from './readings/readings.module';
 		NewsModule,
 		NotificationModule,
 		ReadingsModule,
+		QuotesModule,
 	],
 	controllers: [BasicController],
 	providers: [],

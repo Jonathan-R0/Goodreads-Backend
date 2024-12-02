@@ -155,6 +155,13 @@
       "when": 1732726416113,
       "tag": "0021_loud_toad",
       "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1733116391396,
+      "tag": "0022_ancient_gauntlet",
+      "breakpoints": true
     }
   ]
 }

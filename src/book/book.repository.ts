@@ -4,7 +4,7 @@ import db from '@/config/db.config';
 import { BookAndAuthor, booksTable } from './book.entity';
 import { usersTable } from '../user/user.entity';
 import { and, eq, like } from 'drizzle-orm/expressions';
-import { count, getTableColumns, SQLWrapper } from 'drizzle-orm';
+import { count, getTableColumns, desc } from 'drizzle-orm';
 import { PagedResult } from '@/util/utils';
 
 @Injectable()
@@ -18,6 +18,7 @@ export class BookRepository extends BaseRepository<typeof booksTable> {
 		filterDescription: string,
 		filterGenre: string,
 		filterAuthor: string,
+		sortCreatedAt: boolean,
 		page?: number,
 		pageSize?: number,
 	): Promise<PagedResult<BookAndAuthor[]>> {
@@ -36,6 +37,11 @@ export class BookRepository extends BaseRepository<typeof booksTable> {
 					like(booksTable.description, `%${filterDescription}%`),
 					like(booksTable.genre, `%${filterGenre}%`),
 					like(usersTable.name, `%${filterAuthor}%`),
+				),
+			)
+			.orderBy(
+				desc(
+					sortCreatedAt ? booksTable.publication_date : booksTable.id,
 				),
 			);
 		console.log(partialResp.toSQL().sql);

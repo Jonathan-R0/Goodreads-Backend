@@ -1,9 +1,7 @@
 import { BaseService } from '@/util/base.service';
 import { Injectable } from '@nestjs/common';
 import { booksTable } from './book.entity';
-import { usersTable } from '../user/user.entity';
 import { BookRepository } from './book.repository';
-import { and, like } from 'drizzle-orm';
 
 @Injectable()
 export class BookService extends BaseService<
@@ -21,12 +19,14 @@ export class BookService extends BaseService<
 		filterDescription: string = '',
 		filterGenre: string = '',
 		filterAuthor: string = '',
+		sortCreatedAt: boolean = false,
 	) {
 		return await this.bookRepository.findAllBooksAndAuthorsWhere(
 			filterName,
 			filterDescription,
 			filterGenre,
 			filterAuthor,
+			sortCreatedAt,
 			page,
 			pageSize,
 		);

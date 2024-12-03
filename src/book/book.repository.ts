@@ -4,7 +4,7 @@ import db from '@/config/db.config';
 import { BookAndAuthor, booksTable } from './book.entity';
 import { usersTable } from '../user/user.entity';
 import { and, eq, like } from 'drizzle-orm/expressions';
-import { count, getTableColumns, desc } from 'drizzle-orm';
+import { count, getTableColumns, desc, asc } from 'drizzle-orm';
 import { PagedResult } from '@/util/utils';
 
 @Injectable()
@@ -39,10 +39,9 @@ export class BookRepository extends BaseRepository<typeof booksTable> {
 					like(usersTable.name, `%${filterAuthor}%`),
 				),
 			);
-
 		const partialResp = sortCreatedAt
 			? presortResp.orderBy(desc(booksTable.publication_date))
-			: presortResp;
+			: presortResp.orderBy(asc(booksTable.publication_date));
 
 		const resp = await (page && pageSize
 			? partialResp.limit(pageSize).offset((page - 1) * pageSize)

@@ -8,6 +8,7 @@ import {
 	Query,
 	HttpException,
 	HttpStatus,
+	Delete,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ReadingsService } from './readings.service';
@@ -47,6 +48,21 @@ export class ReadingsController {
 			bookId,
 		);
 		return success(readings);
+	}
+
+	@Delete('/:userId/book/:bookId')
+	@ApiOperation({ summary: 'Delete User Reading' })
+	@ApiResponse({
+		status: 200,
+		description: 'Deletes a reading entry.',
+	})
+	@UseGuards(AuthGuard)
+	public async deleteReading(
+		@Param('userId') userId: number,
+		@Param('bookId') bookId: number,
+	): Promise<StandardResponse<void>> {
+		await this.readingsService.deleteReading(userId, bookId);
+		return success();
 	}
 
 	@Get('/:userId/type/:type')

@@ -12,6 +12,17 @@ export class ReadingsRepository extends BaseRepository<typeof readingsTable> {
 		super(readingsTable, readingsTable.id);
 	}
 
+	async deleteByAuthorIdAndBookId(userId: number, bookId: number): Promise<void> {
+		const result = await db
+			.delete(this.table)
+			.where(
+				and(
+					eq(readingsTable.userId, userId),
+					eq(readingsTable.booksId, bookId),
+				),
+			);
+	}
+
 	async findOneWhere(arg0: {
 		where: { userId: any; bookId: any };
 	}): Promise<Reading> {

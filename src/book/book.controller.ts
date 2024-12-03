@@ -105,7 +105,12 @@ export class BookController {
 	public async createBook(
 		@Body() book: BookDto,
 	): Promise<StandardResponse<Book>> {
-		return success(await this.bookService.create(book));
+		return success(
+			await this.bookService.create({
+				...book,
+				publication_date: new Date(book.publication_date),
+			}),
+		);
 	}
 
 	@Put('/:id')

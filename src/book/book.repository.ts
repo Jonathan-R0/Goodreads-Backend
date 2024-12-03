@@ -24,7 +24,7 @@ export class BookRepository extends BaseRepository<typeof booksTable> {
 	): Promise<PagedResult<BookAndAuthor[]>> {
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { password, ...rest } = getTableColumns(usersTable);
-		const partialResp = db
+		const presortResp = db
 			.select({
 				book: booksTable,
 				user: { ...rest },
@@ -38,13 +38,11 @@ export class BookRepository extends BaseRepository<typeof booksTable> {
 					like(booksTable.genre, `%${filterGenre}%`),
 					like(usersTable.name, `%${filterAuthor}%`),
 				),
-			)
-			.orderBy(
-				desc(
-					sortCreatedAt ? booksTable.publication_date : booksTable.id,
-				),
 			);
-		console.log(partialResp.toSQL().sql);
+
+		const partialResp = sortCreatedAt
+			? presortResp.orderBy(desc(booksTable.publication_date))
+			: presortResp;
 
 		const resp = await (page && pageSize
 			? partialResp.limit(pageSize).offset((page - 1) * pageSize)

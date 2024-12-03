@@ -162,6 +162,13 @@
       "when": 1733116391396,
       "tag": "0022_ancient_gauntlet",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1733237803385,
+      "tag": "0023_fluffy_starbolt",
+      "breakpoints": true
     }
   ]
 }

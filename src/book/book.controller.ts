@@ -70,9 +70,9 @@ export class BookController {
 		description: 'Filter by book author',
 	})
 	@ApiQuery({
-		name: 'createdAt',
+		name: 'sortCreatedAt',
 		required: false,
-		type: Date,
+		type: Boolean,
 		description: 'Filter by book author',
 	})
 	@UseGuards(AuthGuard)
@@ -93,7 +93,7 @@ export class BookController {
 				filterDescription,
 				filterGenre,
 				filterAuthor,
-				sortCreatedAt,
+				Boolean(sortCreatedAt),
 			),
 		);
 	}

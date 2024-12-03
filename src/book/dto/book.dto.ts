@@ -32,7 +32,7 @@ export class BookDto {
 	@IsNotEmpty()
 	@IsOptional()
 	@ApiProperty()
-	publication_date: string;
+	publication_date: Date;
 
 	@IsString()
 	@IsNotEmpty()

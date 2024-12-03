@@ -11,4 +11,16 @@ export class QuoteService extends BaseService<
 	constructor(private readonly quoteRepository: QuoteRepository) {
 		super(quoteRepository);
 	}
+
+	public async list(
+		page?: number,
+		pageSize?: number,
+		filterName: string = '',
+	) {
+		return await this.quoteRepository.findAllQuotesWhere(
+			filterName,
+			page,
+			pageSize,
+		);
+	}
 }

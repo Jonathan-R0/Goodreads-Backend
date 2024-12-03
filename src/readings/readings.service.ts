@@ -85,4 +85,8 @@ export class ReadingsService extends BaseService<
 			pageSize: result.pageSize,
 		};
 	}
+
+	async deleteReading(userId: number, bookId: number): Promise<void> {
+		await this.readingsRepository.deleteByAuthorIdAndBookId(userId, bookId);
+	}
 }

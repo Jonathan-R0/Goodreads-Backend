@@ -33,7 +33,13 @@ npx drizzle-kit generate
 npx drizzle-kit migrate
 ```
 
-6. To use the drizzle dashboard kit run the following command:
+6. To insert the data into the database run the following command:
+
+```bash
+docker exec -i goodreadsdb psql -U postgres -d goodreadsdb < dump.sql 
+```
+
+7. To use the drizzle dashboard kit run the following command:
 
 ```bash
 npx drizzle-kit studio
